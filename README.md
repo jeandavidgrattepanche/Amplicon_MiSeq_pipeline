@@ -26,3 +26,7 @@ Prepare your data and folders:
 	Replace the XXX by the email address you are using for your NCBI account => Entrez.email = "XXX@xx.xx"
 	
 	If you don't an NCBI account, you should create one by going to this ncbi webpage (https://www.ncbi.nlm.nih.gov/account/register/?back_url=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fbioproject&partners-uri=cms:/account/partners)
+
+More description will come soon.
+
+For a detailed guide, see Miseq Amplicon Bioinformatics Pipeline.pdf 
