@@ -58,7 +58,7 @@ def countread(seqfile,treetaxo,otufile,samplelist,dataname):
 #				print(OTUID, " represents", totalread , " for ", occurrence, "samples")
 				outfile = open('outputs/OTUs_ingroup/OTUtable_ingroup.txt','a')
 				if seqlist[OTUID][0].split('_')[2] != 'NoSARblast':
-					print(seqlist[OTUID][0].split('_')[1])
+#					print(seqlist[OTUID][0].split('_')[1])
 					nameB = seqlist[OTUID][0].split('_')[0] + '\t' +seqlist[OTUID][0].split('_')[2]+ '\t' +seqlist[OTUID][0].split('_')[3]+ '\t' +seqlist[OTUID][0].split('_')[4]+ '\t' +seqlist[OTUID][0].split('_')[5]+ '\t' +seqlist[OTUID][0].split('_')[6]+ '\t' +seqlist[OTUID][0].split('_')[7]+ '_' +seqlist[OTUID][0].split('_')[8] +'\t' +seqlist[OTUID][0].split('_')[-3]+'\t' +seqlist[OTUID][0].split('_')[-2] +'\t' +seqlist[OTUID][0].split('_')[-1]
 				else:
 					nameB = seqlist[OTUID][0].split('_')[0] + '\t' +seqlist[OTUID][0].split('_')[1]+ '\t\t\t\t\t\t\t\t'
