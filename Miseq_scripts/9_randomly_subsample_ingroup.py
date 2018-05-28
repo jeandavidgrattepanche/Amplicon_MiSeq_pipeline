@@ -76,5 +76,5 @@ def countread(readmap,samplelist, dataname):
 	
 def main():
 	script, otufile, listofsample, dataname = argv 
-	countread(otufile,listofsample) 
+	countread(otufile,listofsample, dataname) 
 main()
