@@ -16,13 +16,13 @@ duplicatelist = []
 
 
 
-def removeoutgroup(outputpath, outgrouptree, tree, listsample):
+def removeoutgroup(outputpath, outgrouptree, tree, listsample, dataname):
 	print("Remove OTUs based on outgroup tree\n")
 	if not os.path.exists(outputpath + 'outgroup_removal/'): 
 		print('ERROR! No outgroup_removal folder. Run part 2!')	
 		main()
 	os.system('python3 Miseq_scripts/8_remove_outgroup_from_tree.py outputs/outgroup_removal/' +outgrouptree + ' outputs/outgroup_removal/' +tree + ' outputs/OTUs/SWARM_postout.txt outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta')
-	os.system('python3 Miseq_scripts/9_randomly_subsample_ingroup.py outputs/outgroup_removal/SWARM_postout_nosingleton_nochimeras_SARonly.txt '+ listsample)
+	os.system('python3 Miseq_scripts/9_randomly_subsample_ingroup.py outputs/outgroup_removal/SWARM_postout_nosingleton_nochimeras_SARonly.txt '+ listsample + ' '+dataname)
 	os.system('python3 Miseq_scripts/10_taxonomy_Treev2.py outputs/outgroup_removal/' +tree )
 	os.system('python3 Miseq_scripts/11_makeOTUtable_ingroup_v2.py outputs/outgroup_removal/SWARM_postout_nosingleton_nochimeras_SARonly.txt outputs/outgroup_removal/resubsamples.txt '+ listsample)
 	os.system('python3 Miseq_scripts/12_createFinalfiles_v2.2.py outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_nocont_Blasted.fasta outputs/taxonomic_assignment/taxonomy_by_Tree.txt outputs/OTUs_ingroup/SWARM_postout_nosingleton_nochimeras_SARonly_subsampled.txt '+listsample)		
@@ -47,6 +47,15 @@ def main():
 	if b == "":
 		print ('Your input is empty.  Try again. ')
 
+	d = input('where is the name of your run? (Can be found in the name of the sequences files e.g. M00763) \n ')
+	try:
+		dataname = d
+	except ValueError:
+		d = ""	
+	if d == "":
+		print ('Your input is empty.  Try again. ')
+		
+		
 	print("The trees needs to be in the outgroup_removal folder and in newick format\n")
 	c = input('what is the name of your tree (for example:  RAxML_labelledTree_masked_<project>.tre and the same name with _outgroup at the end for the outgroup tree :RAxML_labelledTree_masked_<project>_outgroup.tre ) \n Do Not add the full path or the script will break \n')
 	try:
@@ -61,5 +70,5 @@ def main():
 	if not os.path.exists(outputpath): 
 		print('ERROR! No output folder. run part 2!')
 		main()
-	removeoutgroup(outputpath, outgrouptree, tree, listsample)
+	removeoutgroup(outputpath, outgrouptree, tree, listsample, dataname)
 main()
