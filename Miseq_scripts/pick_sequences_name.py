@@ -14,7 +14,7 @@ from sys import argv
 def main():
 	script, seqfile, name = argv
 	IDlist = []; IDdict={}
-	out= open(Sedfile.split('.')[0]+'_for_'+name+'.fasta','w+')
+	out= open(seqfile.split('.')[0]+'_for_'+name+'.fasta','w+')
 	for Seq in SeqIO.parse(seqfile,'fasta'):
 		if Seq.id.startswith(name):
 			out.write('>'+Seq.id +'\n'+str(Seq.seq)+'\n')
