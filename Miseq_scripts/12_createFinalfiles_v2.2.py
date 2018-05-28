@@ -14,7 +14,7 @@ from sys import argv
 seqlist = {}
 TA_tree= {}
 
-def countread(seqfile,treetaxo,otufile,samplelist): #,dataname):	
+def countread(seqfile,treetaxo,otufile,samplelist,dataname):	
 	if os.path.isfile(seqfile):
 		for Seq in SeqIO.parse(open(seqfile),'fasta'):
 			seqlist[Seq.id.split('_')[0].split('-')[0]] = [Seq.id,str(Seq.seq)]
@@ -37,7 +37,7 @@ def countread(seqfile,treetaxo,otufile,samplelist): #,dataname):
 		abundance = []
 		readnumber= 0
 		for read in line.split('\n')[0].split('\t'  )[1:]:
-			samplename = read.split('_')[0].replace(" ","")
+			samplename = read.split('_'+dataname)[0].replace(" ","")
 			if samplename in samplelist:
 				allread.append(samplename)
 				if samplename not in occlist:
@@ -75,11 +75,11 @@ def countread(seqfile,treetaxo,otufile,samplelist): #,dataname):
 		
 	
 def main():
-	script, seqfile, treetaxo, otufile, listofsample = argv #, dataname = argv
+	script, seqfile, treetaxo, otufile, listofsample, dataname = argv
 	samplelist= []
 	for sample in open(listofsample,'r'):
 		if sample.split('\n')[0] != "":
 			samplelist.append(sample.split('\n')[0].split('\t')[1].replace('_','.'))
 	print(samplelist)
-	countread(seqfile,treetaxo,otufile,samplelist) #,dataname)
+	countread(seqfile,treetaxo,otufile,samplelist,dataname)
 main()
