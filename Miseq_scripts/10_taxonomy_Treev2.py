@@ -31,7 +31,7 @@ def checkClade(tree):
 	for clade in tree.get_terminals():
 		i = 0
 		if "SWARM" in clade.name: 
-			print(clade.name, "checkclade")
+#			print(clade.name, "checkclade")
 			while clade.name not in seen:
 				i = i +1
 				parent = get_parent(tree,clade, i)
