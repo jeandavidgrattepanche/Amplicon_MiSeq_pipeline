@@ -47,7 +47,7 @@ def countread(readmap,samplelist, dataname):
 		else:
 			randomnum = int(j)
 	elif search[0] == 'n':
-		randomnum = 0
+		randomnum = 100000000000
 	else:
 		print ('Please answer yes or no. ')
 		main()
