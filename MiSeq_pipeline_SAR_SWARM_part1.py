@@ -33,7 +33,10 @@ def runPEAR(folder, file1, file2, path, outputpath, listsample):
 
 
 def main():
-	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
+ 	a =sys.argv[1]
+ 	b = sys.argv[2]
+
+#	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
 	try:
 		Path = a
 	except ValueError:
@@ -43,7 +46,7 @@ def main():
 	else:
 		pathA = a.split(' ')[0]
 	path = pathA + "/Rawdata/"
-	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
+#	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
 	try:
 		listsample = b
 	except ValueError:
