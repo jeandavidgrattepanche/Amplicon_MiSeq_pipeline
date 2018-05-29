@@ -146,6 +146,7 @@ What is happening in each script:
 	$ export KEY= you key generater on CIPRES
 	see https://www.phylo.org/restusers/documentation.action for more informations
 	$ curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER -F tool=RAXMLHPC8_REST_XSEDE -F vparam.select_analysis_=fv -F input.infile_=@./outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas -F vparam.runtime_=168 -F vparam.dna_gtrcat_=GTRGAMMA -F vparam.invariable_=I -F input.treetop_=@./SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -F metadata.statusEmail=true
+		A script is availabe to build your tree on CIPRES REST API (see SSU_Database_Builing, turn off line 26 and 27, and turn on line 29,30, and 31. Do not forget to add your reference tree (/SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre for SAR primers)
 	(i) OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas is the alignment create at the end of the script 2
 	(ii) SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre is a reference tree from the SAR_db folder (or homemade tree).
 4- Using Figtree, copy and paste the outgroup clade in a new tree.
