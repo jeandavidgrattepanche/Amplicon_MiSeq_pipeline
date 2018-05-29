@@ -13,8 +13,6 @@ Before starting you need to install:
 # figtree
 # seaview
 
-Many of the software files are located in this google drive (https://drive.google.com/drive/folders/19HYMC-4rXjUkZ4cfRMUOIm1szsJNiLp1).
-
 INSTALLATION in terminal:
 ## homebrew (reinstall homebrew fix a lot of issues)
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -35,7 +33,7 @@ $ python3 -m pip install pandas
 $ python3 -m pip install biopython
 
 ## install PEAR (Paired-end read merger)
-Download the archive in the google drive "pear-0.9.11-linux-x86_64.tar.gz"
+Download from https://www.h-its.org/downloads/pear-academic/
 move the file to your installation folder (here document/softwares/).
 cd document/softwares/
 $ tar -xzvf pear-0.9.11-linux-x86_64.tar.gz
@@ -51,11 +49,15 @@ $ make
 go here ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.7.1+.dmg and follow the instruction
 zip file also in the google drive
 
-## vsearch
-Download the archive in the google drive "vsearch-2.7.1-macos-x86_64.tar.gz"
-move the file to your installation folder (here document/softwares/).
-$ cd document/softwares/
-$ tar -xzvf vsearch-2.7.1-macos-x86_64.tar.gz
+## vsearch (https://github.com/torognes/vsearch) download everything (green button Clone or download at the right corner)
+$ wget https://github.com/torognes/vsearch/archive/v2.8.0.tar.gz
+or download everything from https://github.com/torognes/vsearch (green button Clone or download at the right corner)
+$ tar xzf v2.8.0.tar.gz
+$ cd vsearch-2.8.0
+$ ./autogen.sh
+$ ./configure
+$ make
+$ make install  # as root or sudo make install
 
 ## EMBOSS
 Go to this page to download EMBOSS ftp://emboss.open-bio.org/pub/EMBOSS/
@@ -115,26 +117,37 @@ Prepare your data and folders:
 running the pipeline:
 	In terminal:
 		$ cd MiSeq_folder
-		$ python3 MiSeq_pipeline_SAR_SWARM_partX.py
-				Follow the instruction prompt
+		for step 1:
+		$ python3 MiSeq_pipeline_SAR_SWARM_part1.py ../MiSeq_folder List_sample.txt
+		for step 2:
+		$ python3 MiSeq_pipeline_SAR_SWARM_part2.py ../MiSeq_folder List_sample.txt
+		for step 3:
+		$ python3 MiSeq_pipeline_SAR_SWARM_part3.py ../MiSeq_folder List_sample.txt dataname (e.g. M00763, it's the first code of the sequences name in your convertPEARfiles: >M00763:221:000000000-BP36R:1:1101:14475:1627 1:N:0:AGGCAGAA+AGAGTAGA)
+				
 
 What is happening in each script:
 1- The script MiSeq_pipeline_SAR_SWARM_part1.py will:
-	a- merge your forward and reverse reads using PEAR (Paired-End Read merger) and convert the fastq files in fasta files. (PEAR folder)
+	a- merge your forward and reverse reads using PEAR (Paired-End Read merger) and convert the fastq files in fasta files. (PEAR folder) **=> update PEAR parameters if you use another primer set**
 	b- create a file name readpersample.txt. This file contains the name of your sample and the number of reads after PEAR. (ConvertPEAR folder)
 2- The script MiSeq_pipeline_SAR_SWARM_part2_v4.py will:
 	a- Pick OTUs with SWARM (in OTUs folder, you will find a SWARM_postout.fas files. It's the sequences of your SWARM OTUs)
 	b- Create an OTU table i.e. a table with the proportion of each SWARM OTU for each sample. (in OTUs folder, OTUtable.txt file. You can open the file in excel and have fun analyzing your data).
-	c- Remove chimera using Uchime_denovo implemented in Userach
+	c- Remove chimera using Uchime3_denovo implemented in Vserach
 	d- Remove OTUs too dissimilar to the most abundant OTU using Water implemented in EMBOSS
-	e- BLAST SWARM OTU against SAR database. (in the folder Taxonomic_assignment, you will find two file: "Blast_result_renamed.txt" with the BLAST results and the classification and "no_BLAST_result.txt" containing all SWARM OTUs without BLAST results for the cutoff you used)
-	f- Create an alignment of your OTU and SAR reference from SAR_db folder and remove column with more than 75% empty characters.
+	e- BLAST SWARM OTU against SAR database (or you homemade db). (in the folder Taxonomic_assignment, you will find two file: "Blast_result_renamed.txt" with the BLAST results and the classification and "no_BLAST_result.txt" containing all SWARM OTUs without BLAST results for the cutoff you used)
+	f- Create an alignment of your OTU and SAR reference from SAR_db folder (or your homemade db) and remove column with more than 75% empty characters.
 	(you will also find a temp folder. This folder is for troubleshooting. If you have not issue you can delete it.)
 3- You have to built the tree for the next step:
 	a- You can built the tree locally on your computer using the commandline: raxmlHPC-PTHREADS-AVX2 -f v -s OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas -m GTRGAMMAI -t SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -n <name of the output> -T -1
-	b- This tree can also be run through CIPRES REST APP (CRA) with this commandline: $ curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER -F tool=RAXMLHPC8_REST_XSEDE -F vparam.select_analysis_=fv -F input.infile_=@./outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas -F vparam.runtime_=168 -F vparam.dna_gtrcat_=GTRGAMMA -F vparam.invariable_=I -F input.treetop_=@./SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -F metadata.statusEmail=true
+	b- This tree can also be run through CIPRES REST API (CRA) with this commandline: 
+	$ export URL=https://cipresrest.sdsc.edu/cipresrest/v1
+	$ export CRA_USER = your username on CIPRES
+	$ export PASSWORD = you password on CIPRES
+	$ export KEY= you key generater on CIPRES
+	see https://www.phylo.org/restusers/documentation.action for more informations
+	$ curl -u $CRA_USER:$PASSWORD -H cipres-appkey:$KEY $URL/job/$CRA_USER -F tool=RAXMLHPC8_REST_XSEDE -F vparam.select_analysis_=fv -F input.infile_=@./outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas -F vparam.runtime_=168 -F vparam.dna_gtrcat_=GTRGAMMA -F vparam.invariable_=I -F input.treetop_=@./SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -F metadata.statusEmail=true
 	(i) OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA_masked.fas is the alignment create at the end of the script 2
-	(ii) SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre is a reference tree from the SAR_db folder.
+	(ii) SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre is a reference tree from the SAR_db folder (or homemade tree).
 4- Using Figtree, copy and paste the outgroup clade in a new tree.
 	This step will help removing the outgroup OTUs from your dataset
 5- The script MiSeq_pipeline_SAR_SWARM_part3.py will:
