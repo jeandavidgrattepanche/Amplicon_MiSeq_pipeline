@@ -113,6 +113,7 @@ Prepare your data and folders:
 4- Open the script 6 (in Miseq_scripts folder, named 6_BLASTn_V2.py).
 	Replace the XXX by the email address you are using for your NCBI account => Entrez.email = "XXX@smith.edu"
 	If you don't an NCBI account, you should create one by going to this ncbi webpage (https://www.ncbi.nlm.nih.gov/account/register/?back_url=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fbioproject&partners-uri=cms:/account/partners)
+	__Update__: the new version use Vsearch, so you do not need to do this step of NCBI account.
 
 running the pipeline:
 	In terminal:
@@ -120,9 +121,12 @@ running the pipeline:
 		for step 1:
 		$ python3 MiSeq_pipeline_SAR_SWARM_part1.py ../MiSeq_folder List_sample.txt
 		for step 2:
-		$ python3 MiSeq_pipeline_SAR_SWARM_part2.py ../MiSeq_folder List_sample.txt
+		$ python3 MiSeq_pipeline_SAR_SWARM_part2.py ../MiSeq_folder List_sample.txt dataname
 		for step 3:
-		$ python3 MiSeq_pipeline_SAR_SWARM_part3.py ../MiSeq_folder List_sample.txt dataname (e.g. M00763, it's the first code of the sequences name in your convertPEARfiles: >M00763:221:000000000-BP36R:1:1101:14475:1627 1:N:0:AGGCAGAA+AGAGTAGA)
+		$ python3 MiSeq_pipeline_SAR_SWARM_part3.py ../MiSeq_folder List_sample.txt dataname RAxML_labelledTree_masked_<project>.tre
+		
+	=> dataname (e.g. M00763) it's the first code of the sequences name in your convertPEARfiles: >M00763:221:000000000-BP36R:1:1101:14475:1627 1:N:0:AGGCAGAA+AGAGTAGA.
+	=> RAxML_labelledTree_masked_<project>.tre is the tree run at the end of step 2. You hsould has also a tree with only the outgroup named RAxML_labelledTree_masked_<project>_outgroup.tre
 				
 
 What is happening in each script:
