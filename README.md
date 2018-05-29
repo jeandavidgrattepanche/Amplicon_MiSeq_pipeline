@@ -1,5 +1,6 @@
 # Amplicon_MiSeq_pipline
-This repository contains scripts and database to analyse MiSeq data for Amplicon generate with SAR primers
+This repository contains scripts and database to analyse MiSeq data for Amplicon generate with SAR primers.
+This can be edited by building the database folder (see SSU_database_building repository) and replacing the database in the script 2 MiSeq_pipeline_SAR_SWARM_part2.py
 
 # Pipeline Guide
 
