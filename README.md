@@ -28,6 +28,6 @@ Prepare your data and folders:
 	
 	If you don't an NCBI account, you should create one by going to this ncbi webpage (https://www.ncbi.nlm.nih.gov/account/register/?back_url=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fbioproject&partners-uri=cms:/account/partners)
 
-More description will come soon.
+More description available in Guide_MiSeqPipeline_2018.txt.
 
 For a detailed guide, see Miseq Amplicon Bioinformatics Pipeline.pdf 
