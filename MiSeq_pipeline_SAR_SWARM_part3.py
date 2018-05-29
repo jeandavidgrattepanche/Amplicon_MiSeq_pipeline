@@ -28,7 +28,11 @@ def removeoutgroup(outputpath, outgrouptree, tree, listsample, dataname):
 	os.system('python3 Miseq_scripts/12_createFinalfiles_v2.2.py outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_nocont_Blasted.fasta outputs/taxonomic_assignment/taxonomy_by_Tree.txt outputs/OTUs_ingroup/SWARM_postout_nosingleton_nochimeras_SARonly_subsampled.txt '+listsample+ ' '+ dataname)		
 	
 def main():
-	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
+ 	a =sys.argv[1]
+ 	b = sys.argv[2]
+ 	d = sys.argv[3]
+	c = sys.argv[4]
+#	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
 	try:
 		Path = a
 	except ValueError:
@@ -39,7 +43,7 @@ def main():
 		pathA = a.split(' ')[0]
 	path = pathA + "/Rawdata/"
 
-	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
+#	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
 	try:
 		listsample = b
 	except ValueError:
@@ -47,7 +51,7 @@ def main():
 	if b == "":
 		print ('Your input is empty.  Try again. ')
 
-	d = input('where is the name of your run? (Can be found in the name of the sequences files e.g. M00763) \n ')
+#	d = input('where is the name of your run? (Can be found in the name of the sequences files e.g. M00763) \n ')
 	try:
 		dataname = d
 	except ValueError:
@@ -56,8 +60,8 @@ def main():
 		print ('Your input is empty.  Try again. ')
 		
 		
-	print("The trees needs to be in the outgroup_removal folder and in newick format\n")
-	c = input('what is the name of your tree (for example:  RAxML_labelledTree_masked_<project>.tre and the same name with _outgroup at the end for the outgroup tree :RAxML_labelledTree_masked_<project>_outgroup.tre ) \n Do Not add the full path or the script will break \n')
+#	print("The trees needs to be in the outgroup_removal folder and in newick format\n")
+#	c = input('what is the name of your tree (for example:  RAxML_labelledTree_masked_<project>.tre and the same name with _outgroup at the end for the outgroup tree :RAxML_labelledTree_masked_<project>_outgroup.tre ) \n Do Not add the full path or the script will break \n')
 	try:
 		tree = c
 		outgrouptree = c.split('.tre')[0]+'_outgroup.tre'
