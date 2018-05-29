@@ -35,31 +35,34 @@ def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 			seqused = 1 + int(blastdict[seq.id].split('\t')[7]) - int(blastdict[seq.id].split('\t')[6])
 			cov = round(float(seqused) / float(len(seq.seq)) * 100)
 			outseq = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch.fasta','a')
-			outseq.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-			outseq.close()
+			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
+				outseq.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
+				outseq.close()
+
 			if ID.split('_')[0] == str(Taxa):# or ID.split('_')[1] == Taxa:
 				if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
 					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov )
 					outseqAm = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_Amoeba_vsearch.fasta','a')
 					outseqAm.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
 					outseqAm.close()
-				else:
-					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov , " BUT low read ", int(seq.description.split('_')[1].replace('r','')))
-					outseqAml = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_Amoeba_vsearch_lread.fasta','a')
-					outseqAml.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-					outseqAml.close()
-			else:
-				print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov , " BUT not ", Taxa)
-				outseqnAm = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_Amoeba_vsearch_notAm.fasta','a')
-				outseqnAm.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
-				outseqnAm.close()
+# 				else:
+# 					print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov , " BUT low read ", int(seq.description.split('_')[1].replace('r','')))
+# 					outseqAml = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_Amoeba_vsearch_lread.fasta','a')
+# 					outseqAml.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
+# 					outseqAml.close()
+# 			else:
+# 				print(seq.id, 'blasted with', ID.split(';size=')[0] , " at ", ident , "% and coverage:", cov , " BUT not ", Taxa)
+# 				outseqnAm = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_Amoeba_vsearch_notAm.fasta','a')
+# 				outseqnAm.write('>'+seq.description+ '_'+ ID.split('_rid_')[0] + '_' +str(cov)+'_'+ str(Sim) + '%\n'+str(seq.seq) + '\n')
+# 				outseqnAm.close()
 				
 
 		except:
 			print("NO BLAST for ",seq.id)
 			outseq = open('outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch.fasta','a')
-			outseq.write('>'+seq.description+ '_No_BLASTrecord\n'+str(seq.seq) + '\n')
-			outseq.close()
+			if int(seq.description.split('_')[1].replace('r','')) > (int(readcutoff)-1):
+				outseq.write('>'+seq.description+ '_No_BLASTrecord\n'+str(seq.seq) + '\n')
+				outseq.close()
 		
 def main():
 	script,  NGSfile, idminy, qcovz, Taxa, readcutoff = argv
