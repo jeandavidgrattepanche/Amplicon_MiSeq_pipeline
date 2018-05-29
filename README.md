@@ -33,4 +33,4 @@ Prepare your data and folders:
 
 More description available in Guide_MiSeqPipeline_2018.txt.
 
-For a detailed guide, see Miseq Amplicon Bioinformatics Pipeline.pdf 
+An undergraduate proofread guide can be shared on request.
