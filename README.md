@@ -1,9 +1,16 @@
-# Amplicon_MiSeq_pipline
+# Amplicon_MiSeq_pipeline
 This repository contains scripts and database to analyse MiSeq data for Amplicon generate with SAR primers.
-This can be edited by building the database folder (see SSU_database_building repository) and replacing the database in the script MiSeq_pipeline_SAR_SWARM_part2.py. Do not forget to update PEAR parameter in MiSeq_pipeline_SAR_SWARM_part1.py (see here for parameters https://sco.h-its.org/exelixis/web/software/pear/doc.html)
+
+# Amplicon_MiSeq_pipeline for other lineages
+This set of scripts can be edited by building the database folder (see SSU_database_building repository) and replacing the database in the script MiSeq_pipeline_SAR_SWARM_part2.py and script 6 (look for SAR_db and replace by the corresponding files). Do not forget to update PEAR parameter in MiSeq_pipeline_SAR_SWARM_part1.py (see here for parameters https://sco.h-its.org/exelixis/web/software/pear/doc.html)
 
 Place to update if you use another database:
-will coming soon
+- MiSeq_pipeline_SAR_SWARM_part2.py lines 61, 62, 66, 68, 69 and 73 
+	61 and 68: replace file after '--mapout' by your reference sequence alignemnt
+	62 and 69: replace the last argument by your list of column with missing data
+	66 and 73: replace the "-t" argument by your reference tree
+- script 6: line 15 
+	line 15: replace the SAR_db value by your BLAST db (do not forget to add the database folder)
 
 # Pipeline Guide
 
