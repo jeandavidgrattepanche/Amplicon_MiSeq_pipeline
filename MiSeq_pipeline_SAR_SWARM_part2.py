@@ -73,10 +73,10 @@ def makealignment(AssTaxo, outputpath):
 		os.system('raxmlHPC-PTHREADS-AVX2 -f v -s outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_TA_masked.fas -m GTRGAMMAI -t SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -n test_MiSeq2018.tre -T 4')
 	
 def main():
- 	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
-# 	a =sys.argv[1]
-# 	b = sys.argv[2]
-# 	c = sys.argv[3]
+# 	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
+ 	a =sys.argv[1]
+ 	b = sys.argv[2]
+ 	c = sys.argv[3]
 	listsamp = []
 	try:
 		Path = a
@@ -87,7 +87,7 @@ def main():
 	else:
 		pathA = a.split(' ')[0]
 	path = pathA + "/Rawdata/"
- 	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
+# 	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
 	try:
 		listsample = b
 	except ValueError:
@@ -98,7 +98,7 @@ def main():
 		if samp.split('\t')[0] not in listsamp:
 			listsamp.append(samp.split('\t')[0])
 
- 	c = input('where is the name of your run? (Can be found in the name of the sequences files e.g. M00763) \n ')
+# 	c = input('where is the name of your run? (Can be found in the name of the sequences files e.g. M00763) \n ')
 	try:
 		dataname = c
 	except ValueError:
@@ -151,12 +151,13 @@ def main():
 		else:
 			qcov = float(y)
 		print(qcov)
-		t = input('what is your target taxa? (hit return for default of Am) :')
-		if t == "":
-			taxa = 'Am'
-		else:
-			taxa = t
-		print(taxa)
+#		t = input('what is your target taxa? (hit return for default of Am) :')
+#		if t == "":
+#			taxa = 'Am'
+#		else:
+#			taxa = t
+#		print(taxa)
+		taxa = 'na'
 		r = input('what is the minimum number of read for each OTU? (hit return for default of 100) :')
 		try:
 			num = float(r) + 1
@@ -201,5 +202,5 @@ def main():
 					makesinglefastafile(folder, file1, file2, path, outputpath,listsample)
 	PickOTUSwarm(dSWARM , path, outputpath, listsample, dataname)
 	RunBlast(AssTaxo, outputpath, idmin, qcov, taxa, readcutoff)
-# 	makealignment(AssTaxo, outputpath)
+ 	makealignment(AssTaxo, outputpath)
 main()
