@@ -2,6 +2,9 @@
 This repository contains scripts and database to analyse MiSeq data for Amplicon generate with SAR primers.
 This can be edited by building the database folder (see SSU_database_building repository) and replacing the database in the script MiSeq_pipeline_SAR_SWARM_part2.py. Do not forget to update PEAR parameter in MiSeq_pipeline_SAR_SWARM_part1.py (see here for parameters https://sco.h-its.org/exelixis/web/software/pear/doc.html)
 
+Place to update if you use another database:
+will coming soon
+
 # Pipeline Guide
 
 A whole pipeline (scripts and folders structure) for MiSeq analysis.
