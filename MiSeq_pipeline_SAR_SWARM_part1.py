@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 __author__ = "Jean-David Grattepanche"
-__version__ = "5b, December 19, 2016"
+__version__ = "6, June 1st,2018"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -33,8 +33,8 @@ def runPEAR(folder, file1, file2, path, outputpath, listsample):
 
 
 def main():
- 	a =sys.argv[1]
- 	b = sys.argv[2]
+# 	a =sys.argv[1]
+ 	b = sys.argv[1]
 
 #	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
 	try:
@@ -45,6 +45,7 @@ def main():
 		print ('Your input is empty.  Try again. ')
 	else:
 		pathA = a.split(' ')[0]
+	pathA = os.getcwd()
 	path = pathA + "/Rawdata/"
 #	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
 	try:
