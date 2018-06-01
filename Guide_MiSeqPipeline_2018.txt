@@ -1,17 +1,19 @@
-March 2018
+May 2018
 
+###################################
 Before starting you need to install:
 # python 3
 # biopython
 # PEAR
 # SWARM
-# ncbi_BLAST+
+# ncbi_BLAST+ (not needed in the last version)
 # Vsearch
 # EMBOSS-6.6.0
 # mafft
-# raxml
+# raxml (not needed if you build your tree through CIPRES)
 # figtree
-# seaview
+# seaview (not needed, to look at your alignment)
+####################################
 
 INSTALLATION in terminal:
 ## homebrew (reinstall homebrew fix a lot of issues)
@@ -26,7 +28,7 @@ $ brew link --overwrite python3
 
 
 ## install biopython for python3
-$ python3 -m pip install —upgrade pip
+$ python3 -m pip install --upgrade pip
 $ python3 -m pip install numpy
 $ python3 -m pip install scipy
 $ python3 -m pip install pandas
@@ -35,7 +37,7 @@ $ python3 -m pip install biopython
 ## install PEAR (Paired-end read merger)
 Download from https://www.h-its.org/downloads/pear-academic/
 move the file to your installation folder (here document/softwares/).
-cd document/softwares/
+$ cd document/softwares/
 $ tar -xzvf pear-0.9.11-linux-x86_64.tar.gz
 
 
@@ -70,32 +72,38 @@ $ ./configure —prefix=/usr/local/emboss
 $ make -j 4 (4 in the number of thread of your computer)
 $ make install
 
-## install mafft
+## MAFFT
 $ brew install mafft
 $ brew link --overwrite mafft
 
-## install raxml
+## RAxML
 Go to https://github.com/stamatak/standard-RAxML and download everything (green button Clone or download at the right corner)
 zip file also in the google drive
 move the folder to your installation folder.
 $ cd document/softwares/standard-RAxML-master/
 $ make -f Makefile.AVX2.PTHREADS.gcc
 
-## install Figtree
+## Figtree
 go to http://tree.bio.ed.ac.uk/software/figtree/
 download the last version of FigTree here FigTree v1.4.3.dmg (right side)
-zip file in the google drive
 double click on the dmg and follow instruction
 
 ## seaview:
 go to http://doua.prabi.fr/software/seaview
 download the MacOS version and follow instruction
-zip file in the google drive
 
 ## path_update
 $ cd
 $ open .bash_profile
-export PATH=/folder where installation happen (something like /Users/katzlab/document/softwares/):/ /Users/katzlab/document/softwares/pear-0.9.11-linux-x86_64/bin/:/Users/katzlab/document/softwares/swarm/bin/:/Users/katzlab/document/softwares/vsearch-2.7.1-macos-x86_64/bin/::/Users/katzlab/document/softwares/standard-RAxML-master/:${PATH}
+if you do not have a .bash_profile file
+$ touch .bash_profile 
+$ open .bash_profile
+
+Add to the file
+export PATH=/folder where installation happen (something like /Users/katzlab/document/softwares/):/${PATH}
+
+for example:
+export PATH=/Users/katzlab/document/softwares/pear-0.9.11-linux-x86_64/bin/:/Users/katzlab/document/softwares/swarm/bin/:/Users/katzlab/document/softwares/vsearch-2.7.1-macos-x86_64/bin/:/Users/katzlab/document/softwares/standard-RAxML-master/:${PATH}
 
 ###########################################################
 Pipeline Guide
@@ -115,15 +123,15 @@ Prepare your data and folders:
 	If you don't an NCBI account, you should create one by going to this ncbi webpage (https://www.ncbi.nlm.nih.gov/account/register/?back_url=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fbioproject&partners-uri=cms:/account/partners)
 	__Update__: the new version use Vsearch, so you do not need to do this step of NCBI account.
 
-running the pipeline:
+Running the pipeline:
 	In terminal:
-		$ cd MiSeq_folder
+		$ cd Amplicon_MiSeq_pipeline
 		for step 1:
-		$ python3 MiSeq_pipeline_SAR_SWARM_part1.py ../MiSeq_folder List_sample.txt
+		$ python3 MiSeq_pipeline_SAR_SWARM_part1.py ../Amplicon_MiSeq_pipeline List_sample.txt
 		for step 2:
-		$ python3 MiSeq_pipeline_SAR_SWARM_part2.py ../MiSeq_folder List_sample.txt dataname
+		$ python3 MiSeq_pipeline_SAR_SWARM_part2.py ../Amplicon_MiSeq_pipeline List_sample.txt dataname
 		for step 3:
-		$ python3 MiSeq_pipeline_SAR_SWARM_part3.py ../MiSeq_folder List_sample.txt dataname RAxML_labelledTree_masked_<project>.tre
+		$ python3 MiSeq_pipeline_SAR_SWARM_part3.py ../Amplicon_MiSeq_pipeline List_sample.txt dataname RAxML_labelledTree_masked_<project>.tre
 		
 	=> dataname (e.g. M00763) it's the first code of the sequences name in your convertPEARfiles: >M00763:221:000000000-BP36R:1:1101:14475:1627 1:N:0:AGGCAGAA+AGAGTAGA.
 	=> RAxML_labelledTree_masked_<project>.tre is the tree run at the end of step 2. You hsould has also a tree with only the outgroup named RAxML_labelledTree_masked_<project>_outgroup.tre
@@ -133,10 +141,10 @@ What is happening in each script:
 1- The script MiSeq_pipeline_SAR_SWARM_part1.py will:
 	a- merge your forward and reverse reads using PEAR (Paired-End Read merger) and convert the fastq files in fasta files. (PEAR folder) **=> update PEAR parameters if you use another primer set**
 	b- create a file name readpersample.txt. This file contains the name of your sample and the number of reads after PEAR. (ConvertPEAR folder)
-2- The script MiSeq_pipeline_SAR_SWARM_part2_v4.py will:
+2- The script MiSeq_pipeline_SAR_SWARM_part2.py will:
 	a- Pick OTUs with SWARM (in OTUs folder, you will find a SWARM_postout.fas files. It's the sequences of your SWARM OTUs)
 	b- Create an OTU table i.e. a table with the proportion of each SWARM OTU for each sample. (in OTUs folder, OTUtable.txt file. You can open the file in excel and have fun analyzing your data).
-	c- Remove chimera using Uchime3_denovo implemented in Vserach
+	c- Remove chimera using Uchime3_denovo implemented in Vsearch
 	d- Remove OTUs too dissimilar to the most abundant OTU using Water implemented in EMBOSS
 	e- BLAST SWARM OTU against SAR database (or you homemade db). (in the folder Taxonomic_assignment, you will find two file: "Blast_result_renamed.txt" with the BLAST results and the classification and "no_BLAST_result.txt" containing all SWARM OTUs without BLAST results for the cutoff you used)
 	f- Create an alignment of your OTU and SAR reference from SAR_db folder (or your homemade db) and remove column with more than 75% empty characters.
@@ -161,5 +169,4 @@ What is happening in each script:
 	c- Assign taxonomy by tree
 	d- Built the final OTU table (OTUtable_ingroup.txt), which contains the Taxonomic assignment by BLAST (Btaxo…) and by Tree (Ttaxo), the number of read and occurrence of each OTU and the distribution in your samples.
 
-Now you have your final file, you can explore your data and also see here for statistic using R.
-HAVE FUN !!
+Now you have your final files, you can explore your data. HAVE FUN !!
