@@ -28,19 +28,20 @@ def removeoutgroup(outputpath, outgrouptree, tree, listsample, dataname):
 	os.system('python3 Miseq_scripts/12_createFinalfiles_v2.2.py outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_nocont_Blasted.fasta outputs/taxonomic_assignment/taxonomy_by_Tree.txt outputs/OTUs_ingroup/SWARM_postout_nosingleton_nochimeras_SARonly_subsampled.txt '+listsample+ ' '+ dataname)		
 	
 def main():
- 	a =sys.argv[1]
- 	b = sys.argv[2]
- 	d = sys.argv[3]
-	c = sys.argv[4]
+#  	a =sys.argv[1]
+ 	b = sys.argv[1]
+ 	d = sys.argv[2]
+	c = sys.argv[3]
 #	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
-	try:
-		Path = a
-	except ValueError:
-		a = ""	
-	if a == "":
-		print ('Your input is empty.  Try again. ')
-	else:
+# 	try:
+# 		Path = a
+# 	except ValueError:
+# 		a = ""	
+# 	if a == "":
+# 		print ('Your input is empty.  Try again. ')
+# 	else:
 		pathA = a.split(' ')[0]
+	pathA = os.getcwd()
 	path = pathA + "/Rawdata/"
 
 #	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
