@@ -37,14 +37,14 @@ def main():
  	b = sys.argv[1]
 
 #	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
-	try:
-		Path = a
-	except ValueError:
-		a = ""	
-	if a == "":
-		print ('Your input is empty.  Try again. ')
-	else:
-		pathA = a.split(' ')[0]
+# 	try:
+# 		Path = a
+# 	except ValueError:
+# 		a = ""	
+# 	if a == "":
+# 		print ('Your input is empty.  Try again. ')
+# 	else:
+# 		pathA = a.split(' ')[0]
 	pathA = os.getcwd()
 	path = pathA + "/Rawdata/"
 #	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
