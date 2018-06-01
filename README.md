@@ -6,9 +6,9 @@ This set of scripts can be edited by building the database folder (see SSU_datab
 
 Place to update if you use another database:
 - MiSeq_pipeline_SAR_SWARM_part2.py lines 61, 62, 66, 68, 69 and 73 
-	61 and 68: replace file after '--mapout' by your reference sequence alignemnt
-	62 and 69: replace the last argument by your list of column with missing data
-	66 and 73: replace the "-t" argument by your reference tree
+	*61 and 68: replace file after '--mapout' by your reference sequence alignment
+	*62 and 69: replace the last argument by your list of column with missing data
+	*66 and 73: replace the "-t" argument by your reference tree
 - script 6: line 15 
 	line 15: replace the SAR_db value by your BLAST db (do not forget to add the database folder)
 
