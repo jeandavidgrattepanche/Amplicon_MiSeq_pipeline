@@ -40,7 +40,7 @@ def main():
 # 	if a == "":
 # 		print ('Your input is empty.  Try again. ')
 # 	else:
-		pathA = a.split(' ')[0]
+#		pathA = a.split(' ')[0]
 	pathA = os.getcwd()
 	path = pathA + "/Rawdata/"
 
