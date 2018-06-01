@@ -127,11 +127,11 @@ Running the pipeline:
 	In terminal:
 		$ cd Amplicon_MiSeq_pipeline
 		for step 1:
-		$ python3 MiSeq_pipeline_SAR_SWARM_part1.py ../Amplicon_MiSeq_pipeline List_sample.txt
+		$ python3 MiSeq_pipeline_SAR_SWARM_part1.py List_sample.txt
 		for step 2:
-		$ python3 MiSeq_pipeline_SAR_SWARM_part2.py ../Amplicon_MiSeq_pipeline List_sample.txt dataname
+		$ python3 MiSeq_pipeline_SAR_SWARM_part2.py List_sample.txt dataname
 		for step 3:
-		$ python3 MiSeq_pipeline_SAR_SWARM_part3.py ../Amplicon_MiSeq_pipeline List_sample.txt dataname RAxML_labelledTree_masked_<project>.tre
+		$ python3 MiSeq_pipeline_SAR_SWARM_part3.py List_sample.txt dataname RAxML_labelledTree_masked_<project>.tre
 		
 	=> dataname (e.g. M00763) it's the first code of the sequences name in your convertPEARfiles: >M00763:221:000000000-BP36R:1:1101:14475:1627 1:N:0:AGGCAGAA+AGAGTAGA.
 	=> RAxML_labelledTree_masked_<project>.tre is the tree run at the end of step 2. You hsould has also a tree with only the outgroup named RAxML_labelledTree_masked_<project>_outgroup.tre
