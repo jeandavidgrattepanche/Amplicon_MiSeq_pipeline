@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 __author__ = "Jean-David Grattepanche"
-__version__ = "7.1,April 19, 2017"
+__version__ = "8, June 1st, 2018"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
