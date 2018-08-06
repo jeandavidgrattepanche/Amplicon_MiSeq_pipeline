@@ -38,7 +38,7 @@ def PickOTUSwarm(dSWARM , path,outputpath, listsample, dataname):
 		os.makedirs(outputpath + 'chimeras/') 	
 	os.system('python3 Miseq_scripts/5a_Pre_Uchime_v.py outputs/OTUs/SWARM_postout_nosingleton.fas outputs/OTUs/OTUtable_temp.txt')
 	print("Chimera check using uchime_denovo implemented in vsearch")
-	os.system('/Users/katzlab33_miseq/Documents/vsearch-2.7.1-macos-x86_64/bin/vsearch --uchime3_denovo outputs/chimeras/Seq_reads.fas --nonchimera outputs/chimeras/Seq_reads_nochimera_nosingleton.fas')
+	os.system('/Users/katzlab33_miseq/Documents/vsearch-2.7.1-macos-x86_64/bin/vsearch --uchime3_denovo outputs/chimeras/Seq_reads.fas --nonchimera outputs/chimeras/Seq_reads_nochimera_nosingleton.fas --uchimeout outputs/chimeras/chimeratable.txt')
 	os.system('python3 Miseq_scripts/5b_Post_Uchime_v.py outputs/chimeras/Seq_reads.fas')
 	os.system('python3 Miseq_scripts/5c_Water_remove_contaminant.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed.fas')
 	
