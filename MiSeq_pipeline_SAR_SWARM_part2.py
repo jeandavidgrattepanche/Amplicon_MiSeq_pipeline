@@ -28,9 +28,9 @@ def PickOTUSwarm(dSWARM , path,outputpath, listsample, dataname):
 	#pick OTUs using SWARM
 	print ("Pick OTUs")
 #	os.system('python3 Miseq_scripts/2_dereplicatev2.py outputs/readpooled.fas')		# keep one unique sequences and add the number of this unique sequence
-	os.system('python3 Miseq_scripts/2b_check_primer.py outputs/readpooled.fas')
-	os.system('vsearch --derep_fulllength readpooled_primer.fas --sizeout --relabel_sha1 --fasta_width 0 --output dereplicated_seqfile.fas')
-	os.system('swarm -t 2 -s outputs/OTUs/statSWARM -d '+  str(dSWARM) +' -z outputs/OTUs/dereplicated_seqfile.fas > outputs/OTUs/derepseqfile_output.swarm')
+	os.system('vsearch --derep_fulllength readpooled.fas --sizeout --relabel_sha1 --fasta_width 0 --output outputs/dereplicated_seqfile.fas')
+	os.system('python3 Miseq_scripts/2b_check_primer.py outputs/dereplicated_seqfile.fas')
+	os.system('swarm -t 2 -s outputs/OTUs/statSWARM -d '+  str(dSWARM) +' -z outputs/OTUs/dereplicated_seqfile_primer.fas > outputs/OTUs/derepseqfile_output.swarm')
 	print("Merge SWARM and dereplicate list")
 	os.system('python3 Miseq_scripts/3_postSwarm.py outputs/OTUs/derepseqfile_output.swarm outputs/OTUs/dereplicated_listunique.txt outputs/OTUs/dereplicated_seqfile.fas')
 	print ("Add read numbers")
