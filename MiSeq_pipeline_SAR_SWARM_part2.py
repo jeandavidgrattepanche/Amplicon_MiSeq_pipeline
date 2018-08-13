@@ -28,8 +28,8 @@ def PickOTUSwarm(dSWARM , path,outputpath, listsample, dataname):
 	#pick OTUs using SWARM
 	print ("Pick OTUs")
 #	os.system('python3 Miseq_scripts/2_dereplicatev2.py outputs/readpooled.fas')		# keep one unique sequences and add the number of this unique sequence
-	os.system('vsearch --derep_fulllength readpooled.fas --sizeout --relabel_sha1 --fasta_width 0 --output outputs/dereplicated_seqfile.fas')
-	os.system('python3 Miseq_scripts/2b_check_primer.py outputs/dereplicated_seqfile.fas')
+	os.system('vsearch --derep_fulllength outputs/readpooled.fas --sizeout --relabel_sha1 --fasta_width 0 --output outputs/OTUs/dereplicated_seqfile.fas')
+	os.system('python3 Miseq_scripts/2b_check_primer.py outputs/OTUs/dereplicated_seqfile.fas')
 	os.system('swarm -t 2 -s outputs/OTUs/statSWARM -d '+  str(dSWARM) +' -z outputs/OTUs/dereplicated_seqfile_primer.fas > outputs/OTUs/derepseqfile_output.swarm')
 	print("Merge SWARM and dereplicate list")
 	os.system('python3 Miseq_scripts/3_postSwarm.py outputs/OTUs/derepseqfile_output.swarm outputs/OTUs/dereplicated_listunique.txt outputs/OTUs/dereplicated_seqfile.fas')
@@ -191,6 +191,7 @@ def main():
 	temppath = pathA + '/temp/'
 	if not os.path.exists(temppath): #+ folder):
 		os.makedirs(temppath) #+ folder)	
+	filnum = 0
 	for file in os.listdir(path):
 		print (file)
 		if 'R1' in file and file.split('_')[0] in listsamp:
@@ -202,8 +203,12 @@ def main():
 					print ("file2: ",filee)
 					file2 = filee
 					folder = file1.split("_")[0]+"_"+file1.split("_")[1]
+					filnum += 1
 					makesinglefastafile(folder, file1, file2, path, outputpath,listsample)
-	PickOTUSwarm(dSWARM , path, outputpath, listsample, dataname)
-	RunBlast(AssTaxo, outputpath, idmin, qcov, taxa, readcutoff)
- 	makealignment(AssTaxo, outputpath)
+	if len(listsamp) != filnum:
+		print( "ISSUE with sample list! PLEASE CHECK !")
+	else:
+		PickOTUSwarm(dSWARM , path, outputpath, listsample, dataname)
+		RunBlast(AssTaxo, outputpath, idmin, qcov, taxa, readcutoff)
+		makealignment(AssTaxo, outputpath)
 main()
