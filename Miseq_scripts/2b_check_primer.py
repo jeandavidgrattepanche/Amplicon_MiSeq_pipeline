@@ -14,32 +14,36 @@ from Bio import SeqIO
 from sys import argv
 
 def countread(seqfile):	
-	j = 0; i = 0
-	out = open(seqfile.split('.fas')[0]+'_primer.fas','w+')
+	j = 0; i = 0; bases= ['A','G','T','C']
+	out = open(seqfile.split('.fas')[0]+'_primer.fas','w+'); out2 = open(seqfile.split('.fas')[0]+'_NOprimer.fas','w+')
 	for Seq in SeqIO.parse(seqfile,'fasta'):
-		K = 0; i += 1; Primerlist = []
+		K = 0; i += 1; Primerlist = []; newseq = str(Seq.seq)
 		for Primer in SeqIO.parse('SAR_db/Primer_Sequences.fas','fasta'):
-			while str(Primer.seq) in str(Seq.seq) and Primer.id not in Primerlist:
-				print(Primer.id, " == " , Seq.id)
-				Primerlist.append(Primer.id)
-				K += 1
-# 				for Primer2 in SeqIO.parse('SAR_db/Primer_Sequences.fas','fasta'):
-# 					if str(Primer2.seq) in str(Seq.seq) and Primer2.id not in Primerlist:
-# 						print(Primer2.id, " =/= " , Seq.id)
-# 						K =+ 2
-
+			for l in range(0,len(str(Primer.seq))):
+				for b in bases:
+					newprim = str(Primer.seq)[0:l] + b + str(Primer.seq)[l+1:]
+# 					print(str(Primer.seq), '  ', newprim)
+					for m in range(0,len(str(Primer.seq))):
+						for d in bases:
+							newprim = str(Primer.seq)[0:m] + d + str(Primer.seq)[m+1:]
+							if newprim in str(Seq.seq) and Primer.id.split('_')[0] not in Primerlist:
+#								print(Primer.id, " == " , Seq.id)
+								Primerlist.append(Primer.id.split('_')[0])
+								K += 1
+								if "f" in Primer.id:
+									newseq = newseq.split(str(newprim))[1]
+								if "r" in Primer.id:
+									newseq = newseq.split(str(newprim))[0]
 		if K == 2:
-			out.write('>'+Seq.description + '\n' + str(Seq.seq) + '\n')
-		elif K == 1 :
-			j += 1
-			print(Seq.id, " matches only one primer")
-		elif K == 0:
-			j += 1
-			print(Seq.id, " does not match the primer")
+			out = open(seqfile.split('.fas')[0]+'_primer.fas','a')
+			out.write('>'+Seq.description + '\n' + newseq + '\n')
+			out.close()
 		else:
 			j += 1
-			print(Seq.id, " contains more than the 2 primers")
-	print(str(j), " sequences do not have both primers of ", str(i), " sequences")			
+			out2 = open(seqfile.split('.fas')[0]+'_NOprimer.fas','a')
+			out2.write('>'+Seq.description + '\n' + str(Seq.seq) + '\n')
+			out2.close()
+		print(str(j), " sequences do not have both primers of ", str(i), " sequences")			
 		
 	
 def main():
