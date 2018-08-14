@@ -18,23 +18,26 @@ duplicatelist = []
 
 
 def makesinglefastafile(folder, file1, file2, path, outputpath, listsample):
-	folderP = folder.split('/')[0]
-	os.system('python3 Miseq_scripts/1_pool_rename.py ' + outputpath + 'convertPEARfiles/' + folderP + '.assembled.fas ' + listsample)			# pool all the reads together in a huge file
+	if not os.path.exists(outputpath + 'dereplicated/'): 
+		os.makedirs(outputpath + 'dereplicated/') 	
 
-def PickOTUSwarm(dSWARM , path,outputpath, listsample, dataname):
+	folderP = folder.split('/')[0]
+	os.system('vsearch --derep_fulllength outputs/convertPEARfiles/' + folderP + '.assembled.fas --sizeout --fasta_width 0 --output outputs/dereplicated/'+folderP+'_dereplicated.fas')
+	os.system('python3 Miseq_scripts/1_pool_rename.py ' + outputpath + 'dereplicated/'+folderP+'_dereplicated.fas ' + listsample)			# pool all the reads together in a huge file
+
+def PickOTUSwarm(dSWARM , path,outputpath, listsample): #, dataname):
 	if not os.path.exists(outputpath + 'OTUs/'): 
 		os.makedirs(outputpath + 'OTUs/') 	
-
 	#pick OTUs using SWARM
 	print ("Pick OTUs")
-#	os.system('python3 Miseq_scripts/2_dereplicatev2.py outputs/readpooled.fas')		# keep one unique sequences and add the number of this unique sequence
-	os.system('vsearch --derep_fulllength outputs/readpooled.fas --sizeout --relabel_sha1 --fasta_width 0 --output outputs/OTUs/dereplicated_seqfile.fas')
+	os.system('vsearch --derep_fulllength outputs/dereplicated/readpooled.fas --sizein --sizeout --fasta_width 0 --output outputs/OTUs/dereplicated_seqfile.fas --uc outputs/OTUs/dereplicated_seqfile.map.txt')
 	os.system('python3 Miseq_scripts/2b_check_primer.py outputs/OTUs/dereplicated_seqfile.fas')
-	os.system('swarm -t 2 -s outputs/OTUs/statSWARM -d '+  str(dSWARM) +' -z outputs/OTUs/dereplicated_seqfile_primer.fas > outputs/OTUs/derepseqfile_output.swarm')
+	os.system('vsearch --derep_fulllength outputs/OTUs/dereplicated_seqfile_primer.fas --sizein --sizeout --fasta_width 0 --output outputs/OTUs/dereplicated_seqprimer.fas --uc outputs/OTUs/dereplicated_seqprimer.map.txt')
+	os.system('swarm -t 2 -s outputs/OTUs/statSWARM -d '+  str(dSWARM) +' -z outputs/OTUs/dereplicated_seqprimer.fas > outputs/OTUs/derepseqfile_output.swarm')
 	print("Merge SWARM and dereplicate list")
-	os.system('python3 Miseq_scripts/3_postSwarm.py outputs/OTUs/derepseqfile_output.swarm outputs/OTUs/dereplicated_listunique.txt outputs/OTUs/dereplicated_seqfile.fas')
+	os.system('python3 Miseq_scripts/3_postSwarm_v2.py outputs/OTUs/derepseqfile_output.swarm outputs/OTUs/dereplicated_seqfile.map.txt outputs/OTUs/dereplicated_seqprimer.map.txt outputs/OTUs/dereplicated_seqprimer.fas')
 	print ("Add read numbers")
-	os.system('python3 Miseq_scripts/4_Add_numbers_v2.py outputs/OTUs/SWARM_postout.fas outputs/OTUs/SWARM_postout.txt '+listsample +' '+ dataname) #  '+ str(runref))
+	os.system('python3 Miseq_scripts/4_Add_numbers_v2.py outputs/OTUs/SWARM_postout.fas outputs/OTUs/SWARM_postout.txt '+listsample)# +' '+ dataname) #  '+ str(runref))
 	print("Prepare files for Chimeras check")
 	if not os.path.exists(outputpath + 'chimeras/'): 
 		os.makedirs(outputpath + 'chimeras/') 	
@@ -44,7 +47,7 @@ def PickOTUSwarm(dSWARM , path,outputpath, listsample, dataname):
 	os.system('python3 Miseq_scripts/5b_Post_Uchime_v.py outputs/chimeras/Seq_reads.fas')
 	os.system('python3 Miseq_scripts/5c_Water_remove_contaminant.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed.fas')
 	
-def RunBlast(AssTaxo, outputpath, idmin, qcov, taxa, readcutoff):
+def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 	if AssTaxo == 0:
 		print("No taxonomic assignemt")
 		print("Pipeline over")
@@ -75,22 +78,10 @@ def makealignment(AssTaxo, outputpath):
 		os.system('raxmlHPC-PTHREADS-AVX2 -f v -s outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_TA_masked.fas -m GTRGAMMAI -t SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -n test_MiSeq2018.tre -T 4')
 	
 def main():
-# 	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
-# 	a =sys.argv[1]
- 	b = sys.argv[1]
- 	c = sys.argv[2]
+	b = sys.argv[1]
 	listsamp = []
-# 	try:
-# 		Path = a
-# 	except ValueError:
-# 		a = ""	
-# 	if a == "":
-# 		print ('Your input is empty.  Try again. ')
-# 	else:
-# 		pathA = a.split(' ')[0]
 	pathA = os.getcwd()
 	path = pathA + "/Rawdata/"
-# 	b = input('where is your sample list file (should be a file:  samplelist.txt: LKM## (tab) samplename ) \n ')
 	try:
 		listsample = b
 	except ValueError:
@@ -100,16 +91,6 @@ def main():
 	for samp in open(listsample,'r'):
 		if samp.split('\t')[0] not in listsamp:
 			listsamp.append(samp.split('\t')[0])
-
-# 	c = input('where is the name of your run? (Can be found in the name of the sequences files e.g. M00763) \n ')
-	try:
-		dataname = c
-	except ValueError:
-		c = ""	
-	if c == "":
-		print ('Your input is empty.  Try again. ')
-	
-
 	i = input('What percentage would you like to cluster your OTUs with SWARM (hit return for default of 1) ')
 	try:
 		num = int(i) + 1
@@ -154,13 +135,6 @@ def main():
 		else:
 			qcov = float(y)
 		print(qcov)
-#		t = input('what is your target taxa? (hit return for default of Am) :')
-#		if t == "":
-#			taxa = 'Am'
-#		else:
-#			taxa = t
-#		print(taxa)
-		taxa = 'na'
 		r = input('what is the minimum number of read for each OTU? (hit return for default of 100) :')
 		try:
 			num = float(r) + 1
@@ -203,12 +177,12 @@ def main():
 					print ("file2: ",filee)
 					file2 = filee
 					folder = file1.split("_")[0]+"_"+file1.split("_")[1]
-					filnum += 1
+					filnum+= 1
 					makesinglefastafile(folder, file1, file2, path, outputpath,listsample)
 	if len(listsamp) != filnum:
 		print( "ISSUE with sample list! PLEASE CHECK !")
 	else:
-		PickOTUSwarm(dSWARM , path, outputpath, listsample, dataname)
-		RunBlast(AssTaxo, outputpath, idmin, qcov, taxa, readcutoff)
+		PickOTUSwarm(dSWARM , path, outputpath, listsample)#, dataname)
+		RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff)
 		makealignment(AssTaxo, outputpath)
 main()
