@@ -124,7 +124,7 @@ def main():
 		dSWARM = int(i)
 	print ("you want to use SWARM at ", str(dSWARM))
 
-	BLAST = input('Do you need to assign taxonomy using the BLAST tool? ')
+	BLAST = input('Do you need to assign taxonomy using the BLAST tool? (yes or no)')
 	if BLAST[0] == 'y':
 		AssTaxo = 1
 		x = input('what is the minimum identity cut off? (hit return for default of 90%) :')
