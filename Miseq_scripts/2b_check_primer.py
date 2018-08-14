@@ -43,7 +43,7 @@ def countread(seqfile):
 			out2 = open(seqfile.split('.fas')[0]+'_NOprimer.fas','a')
 			out2.write('>'+Seq.description + '\n' + str(Seq.seq) + '\n')
 			out2.close()
-		print(str(j), " sequences do not have both primers of ", str(i), " sequences")			
+		print(str(j), " sequences do not have both primers of ", str(i), " sequences" , end= '\r')
 		
 	
 def main():

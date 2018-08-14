@@ -13,10 +13,13 @@ from sys import argv
 
 seqlist = {}
 
-def countread(seqfile,otufile,samplelist): #,dataname):	
+## missing the otufile need to be create in script 3
+
+def countread(seqfile,otufile,samplelist) : #,dataname):	
 	for Seq in SeqIO.parse(open(seqfile),'fasta'):
 		seqlist[Seq.id] = str(Seq.seq)
 
+	outseq = open(seqfile.split(".")[0]+ "_nosingleton.fas",'w')
 	outfile = open('outputs/OTUs/OTUtable_temp.txt','w')
 	outfile.write('OTU\toccurrence\treadnumber\t' + str(samplelist).replace("', '",'\t').replace("[",'').replace("]",'').replace("'","") + '\n') #add the heading row with samples name
 	outfile.close()
@@ -26,18 +29,23 @@ def countread(seqfile,otufile,samplelist): #,dataname):
 		allread = []
 		occlist = []
 		abundance = []
-		readnumber= 0
+		readnumber= 0; r34=0
 		for read in line.split('\t'  )[1:]:
 			samplename = read.split('_')[0].replace(" ","")
 			if samplename in samplelist:
-				allread.append(samplename)
+				toadd= samplename + ' ,'
+				allread.extend([samplename for x in range(int(read.split(';size=')[1]))])
+# 				print(allread)
+				r34 += int(read.split(';size=')[1])
 				if samplename not in occlist:
 					occlist.append(samplename)
 			else:
 				print("ERROR in list")
 		occurrence = len(occlist)
 		totalread = len(allread)
-		print(OTUID, " has occurred in ", occurrence, " samples and is represented by ", totalread, " reads.") 
+		print(OTUID, " has occurred in ", occurrence, " samples and is represented by ", totalread, "or", int(r34), " reads.") 
+		if totalread != r34:
+			break
 		if totalread > 1:
 			if occurrence > 0:
 		
@@ -59,7 +67,7 @@ def countread(seqfile,otufile,samplelist): #,dataname):
 		
 	
 def main():
-	script, seqfile, otufile, listofsample = argv #, dataname = argv
+	script, seqfile, otufile, listofsample = argv # , dataname = argv
 	samplefile = open(listofsample,'r')
 	samplelist= []
 	for sample in samplefile:

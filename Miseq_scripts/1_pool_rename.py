@@ -25,7 +25,7 @@ def main():
 		sampleLAKM = seqfile.split('/')[-1].split('_')[0]
 #		print(seqfile, sampleLAKM)
 		samplename = sampledict[sampleLAKM]			
-		out = open("outputs/readpooled.fas",'a')
+		out = open("outputs/dereplicated/readpooled.fas",'a')
 		out.write('>' + samplename + '_' + seq.id + '\n' + str(seq.seq) +'\n')
 		out.close()
 main()
