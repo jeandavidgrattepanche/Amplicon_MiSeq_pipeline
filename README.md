@@ -16,23 +16,35 @@ Place to update if you use another database:
 - script 6: line 15 
 
 	line 15: replace the SAR_db value by your BLAST db (do not forget to add the database folder)
-- add a file with your primers such as: 
->SARf_1
-ACTCAGGGAGGTAGTGACAAG
->SARf_2
-ATTCAGGGAGGTAGTGACAAG
->SARr_1
-GCAGTTAAAAAGCTCGTAGTC
->SARr_2
-GCAGTTAAAAAGCTCGTAGTT
-Note: if you have degenerated bases, you should add the various combination as the script do not do it for you.
+- add a fasta file with your primers such as: 
+
+	'>'SARf_1
+	
+	ACTCAGGGAGGTAGTGACAAG
+	
+	'>'SARf_2
+	
+	ATTCAGGGAGGTAGTGACAAG
+	
+	'>'SARr_1
+	
+	GCAGTTAAAAAGCTCGTAGTC
+	
+	'>'SARr_2
+	
+	GCAGTTAAAAAGCTCGTAGTT
+
+Note: if you have degenerated bases, you should add the various combination as the script do not do it for you. (remove the ' to create your file)
 
 - create a sample list such as:
-LAKM190	Guam.38D
-LAKM81	ST.1.10
-LAKM95	VP16
 
-(the first part is a part of name of the file generated after HTS and the second is the name you want the sample to be labelled)
+	LAKM190	Guam.38D
+	
+	LAKM81	ST.1.10
+	
+	LAKM95	VP16
+
+Note: the first element is a part of name of the file generated after HTS and the second is the name you want the sample to be labelled
 
 # Pipeline Guide
 
