@@ -31,7 +31,7 @@ def countread(seqfile,otufile,samplelist) : #,dataname):
 		abundance = []
 		readnumber= 0; r34=0
 		for read in line.split('\t'  )[1:]:
-			samplename = read.split('_')[0].replace(" ","")
+			samplename = ('_').join(read.split('_')[:-1])
 			if samplename in samplelist:
 				toadd= samplename + ' ,'
 				allread.extend([samplename for x in range(int(read.split(';size=')[1]))])
@@ -72,7 +72,7 @@ def main():
 	samplelist= []
 	for sample in samplefile:
 		if sample.split('\n')[0] != "":
-			samplelist.append(sample.split('\n')[0].split('\t')[1].replace('_','.'))
+			samplelist.append(('_').join(sample.split('\n')[0].split('\t')[1].split('_')[:-1]))
 	print(samplelist)
 	countread(seqfile,otufile,samplelist) #,dataname)
 main()
