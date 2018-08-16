@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 __author__ = "Jean-David Grattepanche"
-__version__ = "5, March 16, 2017"
+__version__ = "6, August 16, 2018"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -13,25 +13,20 @@ from sys import argv
 
 seqlist = {}
 
-## missing the otufile need to be create in script 3
-
-def countread(seqfile,otufile,samplelist) : #,dataname):	
+def countread(seqfile,otufile,samplelist) : 	
 	for Seq in SeqIO.parse(open(seqfile),'fasta'):
 		seqlist[Seq.id] = str(Seq.seq)
 
 	outseq = open(seqfile.split(".")[0]+ "_nosingleton.fas",'w')
 	outfile = open('outputs/OTUs/OTUtable_temp.txt','w')
-	outfile.write('OTU\toccurrence\treadnumber\t' + str(samplelist).replace("', '",'\t').replace("[",'').replace("]",'').replace("'","") + '\n') #add the heading row with samples name
+	outfile.write('SWARM\toccurrence\treadnumber\t' + str(samplelist).replace("', '",'\t').replace("[",'').replace("]",'').replace("'","") + '\n') #add the heading row with samples name
 	outfile.close()
 
 	for line in open(otufile,'r'):
 		OTUID = line.split('\t')[0]
-		allread = []
-		occlist = []
-		abundance = []
-		readnumber= 0; r34=0
+		allread = []; occlist = []; abundance = []; readnumber= 0; r34=0
 		for read in line.split('\t'  )[1:]:
-			samplename = ('_').join(read.split('_')[:-1])
+			samplename = ('_').join(read.replace(' ','').split('_')[:-1])
 			if samplename in samplelist:
 				toadd= samplename + ' ,'
 				allread.extend([samplename for x in range(int(read.split(';size=')[1]))])
@@ -67,12 +62,12 @@ def countread(seqfile,otufile,samplelist) : #,dataname):
 		
 	
 def main():
-	script, seqfile, otufile, listofsample = argv # , dataname = argv
+	script, seqfile, otufile, listofsample = argv 
 	samplefile = open(listofsample,'r')
 	samplelist= []
 	for sample in samplefile:
 		if sample.split('\n')[0] != "":
 			samplelist.append(('_').join(sample.split('\n')[0].split('\t')[1].split('_')[:-1]))
 	print(samplelist)
-	countread(seqfile,otufile,samplelist) #,dataname)
+	countread(seqfile,otufile,samplelist) 
 main()
