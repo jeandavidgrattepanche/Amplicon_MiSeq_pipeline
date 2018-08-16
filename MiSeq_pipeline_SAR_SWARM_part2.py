@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 __author__ = "Jean-David Grattepanche"
-__version__ = "9, June 1st, 2018"
+__version__ = "10, August 16, 2018"
 __email__ = "jeandavid.grattepanche@gmail.com"
 
 
@@ -25,7 +25,7 @@ def makesinglefastafile(folder, file1, file2, path, outputpath, listsample):
 	os.system('vsearch --derep_fulllength outputs/convertPEARfiles/' + folderP + '.assembled.fas --sizeout --fasta_width 0 --output outputs/dereplicated/'+folderP+'_dereplicated.fas')
 	os.system('python3 Miseq_scripts/1_pool_rename.py ' + outputpath + 'dereplicated/'+folderP+'_dereplicated.fas ' + listsample)			# pool all the reads together in a huge file
 
-def PickOTUSwarm(dSWARM , path,outputpath, listsample): #, dataname):
+def PickOTUSwarm(dSWARM , path,outputpath, listsample, readcutoff): #, dataname):
 	if not os.path.exists(outputpath + 'OTUs/'): 
 		os.makedirs(outputpath + 'OTUs/') 	
 	#pick OTUs using SWARM
@@ -41,12 +41,13 @@ def PickOTUSwarm(dSWARM , path,outputpath, listsample): #, dataname):
 	print("Prepare files for Chimeras check")
 	if not os.path.exists(outputpath + 'chimeras/'): 
 		os.makedirs(outputpath + 'chimeras/') 	
-	os.system('python3 Miseq_scripts/5a_Pre_Uchime_v.py outputs/OTUs/SWARM_postout_nosingleton.fas outputs/OTUs/OTUtable_temp.txt')
+	os.system('python3 Miseq_scripts/5a_Pre_Uchime_v.py outputs/OTUs/SWARM_postout_nosingleton.fas outputs/OTUs/OTUtable_temp.txt '+str(readcutoff))
 	print("Chimera check using uchime_denovo implemented in vsearch")
 	os.system('/Users/katzlab33_miseq/Documents/vsearch-2.7.1-macos-x86_64/bin/vsearch --uchime3_denovo outputs/chimeras/Seq_reads.fas --nonchimera outputs/chimeras/Seq_reads_nochimera_nosingleton.fas --uchimeout outputs/chimeras/chimeratable.txt')
 	os.system('python3 Miseq_scripts/5b_Post_Uchime_v.py outputs/chimeras/Seq_reads.fas')
 	os.system('python3 Miseq_scripts/5c_Water_remove_contaminant.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed.fas')
 	
+#def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff,diffcutoff): # version with differential BLAST
 def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 	if AssTaxo == 0:
 		print("No taxonomic assignemt")
@@ -57,6 +58,7 @@ def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 			os.makedirs(outputpath + 'taxonomic_assignment/') # + folderP)	
 		print("Run BLAST")
 		os.system('python3 Miseq_scripts/6_BLASTn_Vsearch.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' +  str(idmin) + " "+ str(qcov) + ' Am '+str(readcutoff))
+#		os.system('python3 Miseq_scripts/6_BLASTn_V3_differential.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' + str(idmin) + " "+ str(qcov) + ' '+str(readcutoff) + ' ' + str(diffcutoff))
 
 def makealignment(AssTaxo, outputpath):
 	print("make alignment for outgroup removal. Take a while\n")
@@ -105,7 +107,7 @@ def main():
 		dSWARM = int(i)
 	print ("you want to use SWARM at ", str(dSWARM))
 
-	BLAST = input('Do you need to assign taxonomy using the BLAST tool? (yes or no)')
+	BLAST = input('Do you need to assign taxonomy using the BLAST tool? (yes or no) ')
 	if BLAST[0] == 'y':
 		AssTaxo = 1
 		x = input('what is the minimum identity cut off? (hit return for default of 90%) :')
@@ -122,6 +124,7 @@ def main():
 			idmin = float(x)
 		print(idmin)
 
+#		y = input('what is the Evalue cut off? (hit return for default of 2e-15) :') #evalue for differential BLAST
 		y = input('what is the minimum query coverage cut off? (hit return for default of 70%) :')
 		try:
 			num = float(y) + 1
@@ -148,6 +151,20 @@ def main():
 		else:
 			readcutoff = int(r)
 		print(readcutoff)
+## next part is for differential BLAST		
+# 		diff = input('what is the differential Evalue ratio? (this ratio represent the hit return for default of 15) :')
+# 		try:
+# 			num = float(diff) + 1
+# 		except TypeError:
+# 			print('Your input must be a number. Try again.')
+# 			main()
+# 		except ValueError:
+# 			diff = ""
+# 		if diff == "":
+# 			diffcutoff = 15
+# 		else:
+# 			diffcutoff = int(diff)
+# 		print(diffcutoff)
 
 		z = input('Hit return when you are ready to continue. ')
 
