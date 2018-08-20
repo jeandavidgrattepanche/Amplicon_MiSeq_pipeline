@@ -32,7 +32,7 @@ def countread(readmap,samplelist):
 		readpersamplesdict[sample.split('\t')[1].split('\n')[0]] = str(readnumber)
 		print(sample.split('\t')[1].split('\n')[0], " has ", str(readnumber), " reads.") 
 
-	search = input('Do you need to subsample? ')
+	search = input('Do you need to subsample? (yes or no)')
 	if search[0] == 'y':
 		j = input('How many reads for each file? ( hit return for default of 10,000) \n')
 		try:
