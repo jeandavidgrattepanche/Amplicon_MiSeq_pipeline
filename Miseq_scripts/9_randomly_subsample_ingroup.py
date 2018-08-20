@@ -14,7 +14,7 @@ from random import randrange
 
 samples = []; readpersamplesdict= {}; listreaddict= {}
 
-def countread(readmap,samplelist, dataname): 	
+def countread(readmap,samplelist): 	
 	folder = readmap.split('/')[0]+'/'+readmap.split('/')[1]
 	for sample in open(samplelist,'r'):
 		samples.append(sample.split('\t')[1].split('\n')[0])
@@ -23,7 +23,7 @@ def countread(readmap,samplelist, dataname):
 		for line in open(readmap,'r'):
 			OTUID = line.split('\t')[0]
 			for read in line.split('\t'  )[1:]:
-				samplename = read.split('_'+dataname)[0].replace(" ","")
+				samplename = read.split('_')[0].replace(" ","").replace("'","")
 				if samplename == sample.split('\t')[1].split('\n')[0]:
 					readnumber=readnumber + 1
 					listreaddict[sample.split('\t')[1].split('\n')[0]].append(OTUID+";"+read)
@@ -47,12 +47,12 @@ def countread(readmap,samplelist, dataname):
 		else:
 			randomnum = int(j)
 	elif search[0] == 'n':
-		randomnum = 100000000000
+		randomnum = 0
 	else:
 		print ('Please answer yes or no. ')
 		main()
 
-	outfile = open(folder+'/resubsamples.txt','w+')
+	outfile = open(folder+'/subsampled.txt','w+')
 	for sample2 in open(samplelist,'r'):
 		samplelistname = sample2.split('\t')[1].split('\n')[0]	
 		if int(readpersamplesdict[samplelistname]) >= int(randomnum):
@@ -75,6 +75,6 @@ def countread(readmap,samplelist, dataname):
 	outfile.close()		
 	
 def main():
-	script, otufile, listofsample, dataname = argv 
-	countread(otufile,listofsample, dataname) 
+	script, otufile, listofsample = argv 
+	countread(otufile,listofsample) 
 main()

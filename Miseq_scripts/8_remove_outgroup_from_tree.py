@@ -18,25 +18,32 @@ from sys import argv
 
 def main():
 	script, treefileout, treefileall, otu_read, seqnosingleton = argv
-	nosingletonlist = []
+	nosingletonlist = []; seqdict= {}
 	for Seq in SeqIO.parse(open(seqnosingleton,'r'),'fasta'):
 		nosingletonlist.append(Seq.id.split('_')[0])
+		seqdict[Seq.id.split('_')[0]] =  [Seq.description, str(Seq.seq)]
 	print(len(nosingletonlist))
 	folder = treefileall.split('/')[0]+'/'+treefileall.split('/')[1]
-	out = open(folder+'/'+otu_read.split('/')[-1].split('.')[0] + '_nosingleton_nochimeras_SARonly.txt','w+')
+	out = open(folder+'/'+otu_read.split('/')[-1].split('.')[0] + '_nosingleton_nochimeras_in_only.txt','w+')
+	outseq = open(folder+'/'+otu_read.split('/')[-1].split('.')[0] + '_nosingleton_nochimeras_in_only.fasta','w+')
 	OTUReaddict = {}; readlist = []
 	treeout = open(treefileout,'r').readline()
 	treeall = open(treefileall,'r').readline()
 	for line in open(otu_read,'r'):
-		OTUname = '_' +line.split('\t')[0] + ":"
+		allread = []
+		OTUname = 'QUERY___' +line.split('\t')[0] + "_"
+# 		print(OTUname)
 		if OTUname in treeall:
 			if OTUname in treeout:
 				print('outgroup OTU: ', line.split('\t')[0])	
 			else:
 				if line.split('\t')[0] in nosingletonlist:
-					out.write(line)
-				else:
-					print(line.split('\t')[0], ' is a potential contaminant')
+					outseq.write('>' + seqdict[line.split('\t')[0]][0] + '\n' + seqdict[line.split('\t')[0]][1] + '\n')
+					for read in line.split('\t'  )[1:]:
+						samplename = ('_').join(read.replace(' ','').split('_')[:-1])
+						allread.extend([samplename for x in range(int(read.split(';size=')[1]))])
+					out.write(line.split('\t')[0]+ '\t'+ str(allread).replace(',','\t').replace('[','').replace(']','') +  '\n')
+					print(line.split('\t')[0],' has ',len(allread),' reads')
 		else:
 			if line.split('\t')[0] in nosingletonlist:
 				print(line.split('\t')[0], ' is not in the tree. TAKE A look')
