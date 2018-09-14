@@ -19,8 +19,9 @@ INSTALLATION in terminal:
 ## homebrew (reinstall homebrew fix a lot of issues)
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-## git
+## git and automake
 $ brew install git
+$ brew install automake
 
 ## python 3
 $ brew install python3
@@ -38,7 +39,11 @@ $ python3 -m pip install biopython
 Download from https://www.h-its.org/downloads/pear-academic/
 move the file to your installation folder (here document/softwares/).
 $ cd document/softwares/
-$ tar -xzvf pear-0.9.11-linux-x86_64.tar.gz
+$ tar -xzvf pear-src-0.9.11
+$ autoreconf -i
+$ ./configure
+$ make
+$ sudo make install
 
 
 ## install SWARM
@@ -60,10 +65,6 @@ $ ./autogen.sh
 $ ./configure
 $ make
 $ make install  # as root or sudo make install
-
-##if issue with installation of vsearch: **missing autoconf**
-$ brew install automake
-
 
 ## EMBOSS
 Go to this page to download EMBOSS ftp://emboss.open-bio.org/pub/EMBOSS/
