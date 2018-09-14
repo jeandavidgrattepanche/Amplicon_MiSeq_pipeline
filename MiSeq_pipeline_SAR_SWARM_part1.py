@@ -17,7 +17,7 @@ duplicatelist = []
 
 
 
-def runPEAR(folder, file1, file2, path, outputpath, listsample):
+def runPEAR(folder, file1, file2, path, outputpath):
 	folderP = folder.split('/')[0]
 
 	if not os.path.exists(outputpath +'PEAR/'):
