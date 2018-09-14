@@ -12,7 +12,7 @@ Before starting you need to install:
 # mafft
 # raxml (not needed if you build your tree through CIPRES)
 # figtree
-# seaview (not needed, to look at your alignment)
+# seaview (not needed, only for looking at your alignment)
 ####################################
 
 INSTALLATION in terminal:
@@ -49,9 +49,9 @@ $ make
 
 ## ncbi_BLAST+
 go here ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.7.1+.dmg and follow the instruction
-zip file also in the google drive
 
-## vsearch (https://github.com/torognes/vsearch) download everything (green button Clone or download at the right corner)
+
+## vsearch (https://github.com/torognes/vsearch) 
 $ wget https://github.com/torognes/vsearch/archive/v2.8.0.tar.gz
 or download everything from https://github.com/torognes/vsearch (green button Clone or download at the right corner)
 $ tar xzf v2.8.0.tar.gz
@@ -61,9 +61,13 @@ $ ./configure
 $ make
 $ make install  # as root or sudo make install
 
+##if issue with installation of vsearch: **missing autoconf**
+$ brew install automake
+
+
 ## EMBOSS
 Go to this page to download EMBOSS ftp://emboss.open-bio.org/pub/EMBOSS/
-Download emboss-latest.tar.gz (also in the google drive)
+Download emboss-latest.tar.gz
 move the file to your installation folder.
 $ cd your installation folder
 $ tar -xzvf emboss-latest.tar.gz
@@ -78,7 +82,6 @@ $ brew link --overwrite mafft
 
 ## RAxML
 Go to https://github.com/stamatak/standard-RAxML and download everything (green button Clone or download at the right corner)
-zip file also in the google drive
 move the folder to your installation folder.
 $ cd document/softwares/standard-RAxML-master/
 $ make -f Makefile.AVX2.PTHREADS.gcc
@@ -108,13 +111,11 @@ export PATH=/Users/katzlab/document/softwares/pear-0.9.11-linux-x86_64/bin/:/Use
 ###########################################################
 Pipeline Guide
 
-A whole pipeline (scripts and folders structure) for MiSeq analysis can be found in this Google Drive folder. https://drive.google.com/drive/folders/0B7pPvUs0vs2mNUEzT2FHS0F4bnc
-
 Prepare your data and folders:
-0- keep the same folders and files structure from the google drive folder of the script will crash
+0- keep the same folders and files structure from the repository or the script will crash
 1- Create a folder named Rawdata with all your MiSeq sequence files (e.g. LAKM1_To.1.2_S1_L001_R1.fastq.gz, LAKM1_To.1.2_S1_L001_R2.fastq.gz)
 	You can use the script movefile.py to create this folder
-2- Create a file with your sample code and sample name (there should be a file named List_samples.txt containing: LKM## (tab) samplename ) \n '
+2- Create a file with your sample code and sample name (a file named List_samples.txt containing: LKM# (tab) samplename ) \n '
 	You can use excel to create this file and save as a Tab Delimited Text (.txt) file
 	So far, the List_samples.txt file includes all the samples. Delete the samples you are not interested in.
 3- Copy the script folder, SAR_db folder and the 3 scripts named MiSeq_pipeline_SAR_SWARM_part(1,2 and 3).py from this Google Drive folder and add all in the folder where you save the samplelist.txt and the rawdata folder (MiSeq_folder).
