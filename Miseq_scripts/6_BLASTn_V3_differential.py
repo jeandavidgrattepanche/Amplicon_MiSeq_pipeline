@@ -21,8 +21,8 @@ from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio.Blast import NCBIXML
 from Bio.Blast import NCBIWWW
 
-in_db = "Amoeba_db/onlyAm_ref_072618.fasta"
-out_db = "Amoeba_db/out_db_BLAST.fasta"
+in_db = "SAR_db/SAR_in.fasta"
+out_db = "SAR_db/SAR_out.fasta"
 Amblastdict = {}; outblastdict = {}
 
 def getBLAST( NGSfile, idmin, Emin, readcut, cutoff):
