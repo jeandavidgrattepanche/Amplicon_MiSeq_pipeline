@@ -15,6 +15,7 @@ from random import randrange
 samples = []; readpersamplesdict= {}; listreaddict= {}
 
 def countread(readmap,samplelist): 	
+	outlog = open('readpersample_cleaned.txt','w+')
 	folder = readmap.split('/')[0]+'/'+readmap.split('/')[1]
 	for sample in open(samplelist,'r'):
 		samples.append(sample.split('\t')[1].split('\n')[0])
@@ -31,8 +32,10 @@ def countread(readmap,samplelist):
 
 		readpersamplesdict[sample.split('\t')[1].split('\n')[0]] = str(readnumber)
 		print(sample.split('\t')[1].split('\n')[0], " has ", str(readnumber), " reads.") 
+		outlog.write( sample.split('\t')[1].split('\n')[0]+ "\t"+ str(readnumber)+'\n')
+	outlog.close()	
 
-	search = input('Do you need to subsample? (yes or no)')
+	search = input('Do you need to subsample? (yes or no) \n')
 	if search[0] == 'y':
 		j = input('How many reads for each file? ( hit return for default of 10,000) \n')
 		try:
