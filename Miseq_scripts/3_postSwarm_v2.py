@@ -19,6 +19,9 @@ readdict = {}
 start_time = time.time()
 totalread = 0
 
+outseq = open("outputs/OTUs/SWARM_postout.fas",'w+')
+outlist = open("outputs/OTUs/SWARM_postout.txt",'w+')
+
 def countread(swarmout, derepmapfile, derepmapprimer, derepseqprimer):
 	for line in open(derepmapfile,'r'):
 		if line.split('\t')[0] == 'S':
