@@ -19,10 +19,12 @@ INSTALLATION in terminal:
 ## homebrew (reinstall homebrew fix a lot of issues)
 $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-## git and automake
+## git, wget, ps2pdf and autotools
 $ brew install git
 $ brew install automake
+$ brew install autoconfig
 $ brew install wget
+$ brew install ghostscript
 
 ## python 3
 $ brew install python3
@@ -66,6 +68,10 @@ $ ./autogen.sh
 $ ./configure
 $ make
 $ make install  # as root or sudo make install
+
+in makefile replace 344 MACOSX_DEPLOYMENT_TARGET = 10.7 by MACOSX_DEPLOYMENT_TARGET = 10.14
+(some issue with new OSx version: install /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
+solved it)
 
 ## EMBOSS
 Go to this page to download EMBOSS ftp://emboss.open-bio.org/pub/EMBOSS/
