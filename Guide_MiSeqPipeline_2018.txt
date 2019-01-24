@@ -22,6 +22,7 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 ## git and automake
 $ brew install git
 $ brew install automake
+$ brew install wget
 
 ## python 3
 $ brew install python3
