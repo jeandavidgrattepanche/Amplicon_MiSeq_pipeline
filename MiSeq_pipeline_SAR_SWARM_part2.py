@@ -169,7 +169,7 @@ def main():
 	filnum = 0
 	for file in os.listdir(path):
 		filnum += 1
-#		makesinglefastafile(file, path, outputpath,listsample)
+		makesinglefastafile(file, path, outputpath,listsample)
 	if len(listsamp) != filnum:
 		print(int(len(listsamp)), "<>",int(filnum),  "ISSUE with sample list! PLEASE CHECK !")
 	else:
