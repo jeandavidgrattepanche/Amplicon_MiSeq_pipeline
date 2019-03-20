@@ -30,14 +30,14 @@ def checkClade(tree):
 	out = open('outputs/taxonomic_assignment/taxonomy_by_Tree.txt','w+')
 	for clade in tree.get_terminals():
 		i = 0
-		if "SWARM" in clade.name: 
+		if "OTU" in clade.name: 
 #			print(clade.name, "checkclade")
 			while clade.name not in seen:
 				i = i +1
 				parent = get_parent(tree,clade, i)
 				for leaf in parent.get_terminals():
 #					print(leaf.name)
-						if 'SWARM' not in leaf.name and clade.name not in seen:
+						if 'OTU' not in leaf.name and clade.name not in seen:
 							print(clade.name, 'closely related at', str(i),'to ',leaf.name, 'distance=', tree.distance(clade,leaf))
 							out.write(clade.name+'\t'+ str(i) +'\t'+str(tree.distance(clade,leaf))+ '\t'+leaf.name+'\n')
 							seen.append(clade.name)
