@@ -25,7 +25,7 @@ def removeoutgroup(outputpath, outgrouptree, tree, listsample, dataname):
 	os.system('python3 Miseq_scripts/9_randomly_subsample_ingroup.py outputs/outgroup_removal/SWARM_postout_nosingleton_nochimeras_SARonly.txt '+ listsample + ' '+dataname)
 	os.system('python3 Miseq_scripts/10_taxonomy_Treev2.py outputs/outgroup_removal/' +tree )
 	os.system('python3 Miseq_scripts/11_makeOTUtable_ingroup_v2.py outputs/outgroup_removal/SWARM_postout_nosingleton_nochimeras_SARonly.txt outputs/outgroup_removal/resubsamples.txt '+ listsample)
-	os.system('python3 Miseq_scripts/12_createFinalfiles_v2.2.py outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_nocont_Blasted.fasta outputs/taxonomic_assignment/taxonomy_by_Tree.txt outputs/OTUs_ingroup/SWARM_postout_nosingleton_nochimeras_SARonly_subsampled.txt '+listsample) #+ ' '+ dataname)		
+	os.system('python3 Miseq_scripts/12_createFinalfiles_v2.2.py outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch.fasta outputs/taxonomic_assignment/taxonomy_by_Tree.txt outputs/OTUs_ingroup/SWARM_postout_nosingleton_nochimeras_SARonly_subsampled.txt '+listsample) #+ ' '+ dataname)		
 	
 def main():
 #  	a =sys.argv[1]
