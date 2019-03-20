@@ -37,7 +37,7 @@ def countread(seqfile,BLASTtsv, treetaxo,otufile,samplelist): #,dataname):
 		abundance = []
 		readnumber= 0
 		for read in line.split('\n')[0].split('\t'  )[1:]:
-			samplename = read.replace(" ","").replace('"',"")
+			samplename = read.replace(" ","").replace('"',"").replace('"','')
 			if samplename in samplelist:
 				allread.append(samplename)
 				if samplename not in occlist:
