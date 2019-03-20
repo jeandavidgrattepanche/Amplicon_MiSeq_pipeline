@@ -29,8 +29,8 @@ def removeoutgroup(outputpath, outgrouptree, tree, listsample, dataname):
 	
 def main():
 #  	a =sys.argv[1]
- 	b = sys.argv[1]
- 	d = sys.argv[2]
+	b = sys.argv[1]
+	d = sys.argv[2]
 	c = sys.argv[3]
 #	a = input('where your raw data folder is (should be a folder:  /Users/katzlab33/Documents/MiSeq2016/MiSeq_pipeline ) \n ')
 # 	try:
