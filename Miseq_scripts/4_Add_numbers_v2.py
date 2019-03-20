@@ -67,7 +67,7 @@ def main():
 	samplelist= []
 	for sample in samplefile:
 		if sample.split('\n')[0] != "":
-			samplelist.append(('_').join(sample.split('\n')[0].split('\t')[1].split('_')[:-1]))
+			samplelist.append(('_').join(sample.split('\n')[0].split('\t')[1]) #.split('_')[:-1]))
 	print(samplelist)
 	countread(seqfile,otufile,samplelist) 
 main()
