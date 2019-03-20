@@ -12,12 +12,12 @@ from Bio import SeqIO
 from sys import argv
 
 vsearch_path = spawn.find_executable("vsearch")
-SAR_db = "Amoeba_db/Am_Cleaned3_5_25_clean.fasta"
+SAR_db = "Amoeba_db/Am_Cleaned3_5_25_clean.fasta" ##change to the correct database
 blastdict = {}
 
 def getBLAST( NGSfile, idmin, qcov, Taxa, readcutoff):
 	print("start BLAST SSU_Am_plusout")
-	ublast_self = '/Users/katzlab33_miseq/Documents/vsearch-2.7.1-macos-x86_64/bin/vsearch --usearch_global '+NGSfile+' --db '+SAR_db+ ' --strand plus --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out temp/output.tsv ' ## No -evalue 1e-15 as usearch
+	ublast_self = vsearch_path + ' --usearch_global '+NGSfile+' --db '+SAR_db+ ' --strand plus --id '+str(idmin/100)+' --query_cov '+ str(qcov/100)+' --blast6out temp/output.tsv ' ## No -evalue 1e-15 as usearch
 	os.system(ublast_self)
 	for blast_record in open('temp/output.tsv','r'):
 		blastdict[blast_record.split('\t')[0]] = blast_record.split('\n')[0]
