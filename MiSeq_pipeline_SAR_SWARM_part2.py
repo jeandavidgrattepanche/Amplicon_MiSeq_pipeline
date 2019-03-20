@@ -55,7 +55,7 @@ def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 		if not os.path.exists(outputpath + 'taxonomic_assignment/'): #/' + folderP):
 			os.makedirs(outputpath + 'taxonomic_assignment/') # + folderP)	
 		print("Run BLAST")
-		os.system('python3 Miseq_scripts/6_BLASTn_Vsearch.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' +  str(idmin) + " "+ str(qcov) + ' '+str(readcutoff))
+		os.system('python3 Miseq_scripts/6_BLASTn_Vsearch.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' +  str(idmin) + " "+ str(qcov) + ' SAR '+str(readcutoff))
 #		os.system('python3 Miseq_scripts/6_BLASTn_V3_differential.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' + str(idmin) + " "+ str(qcov) + ' '+str(readcutoff) + ' ' + str(diffcutoff))
 
 def makealignment(AssTaxo, outputpath):
