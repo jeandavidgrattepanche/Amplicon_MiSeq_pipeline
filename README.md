@@ -66,7 +66,7 @@ This set of scripts can be edited to use another set of primers/taxa.
 
 part 1: Do not forget to update PEAR parameters in MiSeq_pipeline_SAR_SWARM_part1.py (see here for parameters https://sco.h-its.org/exelixis/web/software/pear/doc.html)
 
-part2: build your database folder (see SSU_database_building repository for scripts and more information) and replacing the database in the script MiSeq_pipeline_SAR_SWARM_part2.py and script 6 (look for SAR_db and replace by the corresponding files). 
+part2: build your database folder (see https://github.com/jeandavidgrattepanche/SSU_DataBase_builiding for scripts and more information) and replacing the database in the script MiSeq_pipeline_SAR_SWARM_part2.py and script 6 (look for SAR_db and replace by the corresponding files). 
 
 Where to update your reference database:
 - MiSeq_pipeline_SAR_SWARM_part2.py lines 61, 62, 66, 68, 69 and 73 
