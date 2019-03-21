@@ -1,3 +1,5 @@
+# python3 MiSeq_pipeline_SAR_SWARM_part2.py list_sample.txt (data_name)
+# then reply to prompts (read guide before)
 #!/usr/bin/python3
 
 __author__ = "Jean-David Grattepanche"
@@ -52,16 +54,16 @@ def RunBlast(AssTaxo, outputpath, idmin, qcov, readcutoff):
 		print("Pipeline over")
 		
 	if AssTaxo == 1:
-		if not os.path.exists(outputpath + 'taxonomic_assignment/'): #/' + folderP):
-			os.makedirs(outputpath + 'taxonomic_assignment/') # + folderP)	
+		if not os.path.exists(outputpath + 'taxonomic_assignment/'): 
+			os.makedirs(outputpath + 'taxonomic_assignment/') 
 		print("Run BLAST")
 		os.system('python3 Miseq_scripts/6_BLASTn_Vsearch.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' +  str(idmin) + " "+ str(qcov) + ' SAR '+str(readcutoff))
 #		os.system('python3 Miseq_scripts/6_BLASTn_V3_differential.py outputs/chimeras/Seq_reads_nochimera_nosingleton_renamed_nocont.fasta ' + str(idmin) + " "+ str(qcov) + ' '+str(readcutoff) + ' ' + str(diffcutoff))
 
 def makealignment(AssTaxo, outputpath):
 	print("make alignment for outgroup removal. Take a while\n")
-	if not os.path.exists(outputpath + 'outgroup_removal/'): #/' + folderP):
-		os.makedirs(outputpath + 'outgroup_removal/') # + folderP)	
+	if not os.path.exists(outputpath + 'outgroup_removal/'): 
+		os.makedirs(outputpath + 'outgroup_removal/') 
 	if AssTaxo == 1:
 		os.system('mafft --addfragments outputs/taxonomic_assignment/Seq_reads_nochimera_nosingleton_vsearch.fasta --thread 10 --reorder --mapout SAR_db/SSU_SAR_EUK_v14.3_mafft.fasta > outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA.fasta')
 		os.system('python3 Miseq_scripts/7_remove_column.py outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_BLASTed_TA.fasta fasta SAR_db/SSU_SAR_EUK_v14.3_mask_75.txt')
@@ -78,19 +80,26 @@ def makealignment(AssTaxo, outputpath):
 		os.system('raxmlHPC-PTHREADS-AVX2 -f v -s outputs/outgroup_removal/OTUseq_nosingleton_nochimeras_nocont_TA_masked.fas -m GTRGAMMAI -t SAR_db/SSU_SAR_EUK_v14.3_RAxML_constraint_rooted.tre -n test_MiSeq2018.tre -T 10')
 	
 def main():
-	b = sys.argv[1]
+	samplefile = sys.argv[1]
+#	dname = sys.argv[2]
 	listsamp = []
 	pathA = os.getcwd()
 	path = pathA + "/outputs/convertPEARfiles/"
 	try:
-		listsample = b
+		listsample = samplefile
 	except ValueError:
-		b = ""	
-	if b == "":
-		print ('Your input is empty.  Try again. ')
+		samplefile = ""	
+	if samplefile == "":
+		print ('Your input samplefile is empty.  Try again. ')
 	for samp in open(listsample,'r'):
 		if samp.split('\t')[0] not in listsamp:
 			listsamp.append(samp.split('\t')[0])
+# 	try:
+# 		dataname = dname
+# 	except ValueError:
+# 		dname = ""	
+# 	if dname == "":
+# 		print ('Your input dataname is empty.  Try again. ')
 	i = input('What percentage would you like to cluster your OTUs with SWARM (hit return for default of 1) ')
 	try:
 		num = int(i) + 1
@@ -161,11 +170,11 @@ def main():
 		main()
 	
 	outputpath = pathA + '/outputs/'
-	if not os.path.exists(outputpath): #+ folder):
-		os.makedirs(outputpath) #+ folder)	
+	if not os.path.exists(outputpath): 
+		os.makedirs(outputpath) 	
 	temppath = pathA + '/temp/'
-	if not os.path.exists(temppath): #+ folder):
-		os.makedirs(temppath) #+ folder)	
+	if not os.path.exists(temppath): 
+		os.makedirs(temppath) 	
 	filnum = 0
 	for file in os.listdir(path):
 		filnum += 1
