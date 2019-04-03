@@ -58,11 +58,11 @@ def countread(seqfile):
 			out.close()
 		elif Seq.description in chimlist:
 			out3 = open(seqfile.split('.fas')[0]+'_TwicePrim.fas','a')
-			out3.write('>'+Seq.description + '\n' + newseq + '\n')
+			out3.write('>'+Seq.description + '\n' + str(Seq.seq) + '\n')
 			out3.close()
 		elif Seq.description in crap:
 			out4 = open(seqfile.split('.fas')[0]+'_CRAP.fas','a')
-			out4.write('>'+Seq.description + '\n' + newseq + '\n')
+			out4.write('>'+Seq.description + '\n' + str(Seq.seq) + '\n')
 			out4.close()
 		else:
 			j += 1
