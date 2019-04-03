@@ -28,24 +28,30 @@ def countread(seqfile):
 							primlist.append(["f", edprim2])
 						if ["r", edprim2] not in primlist and Primer.id.split('_')[1] == "r":
 							primlist.append(["r", edprim2])
-	chimlist = []
+	chimlist = []; crap= []
 	for Seq in SeqIO.parse(seqfile,'fasta'):
 		K = 0; i += 1; Primerlist = []; newseq = str(Seq.seq)
 		for newprim in primlist:
 			if newprim[1] in str(Seq.seq) and newprim[0] not in Primerlist:
-				if str(Seq.seq).count(newprim[1]) > 1:
-					if Seq.description not in chimlist:
-						chimlist.append(Seq.description)
-# 						print(Seq.id," is a potential chimera! you should check it!", '\n')
-					else:
-						print('Duplicate primer!!')
-				else:	
-					Primerlist.append(newprim[0])
-					K += 1
-					if newprim[0] == "f":
-						newseq = newseq.split(str(newprim[1]))[1]
-					if newprim[0] == "r":
-						newseq = newseq.split(str(newprim[1]))[0]
+				if len(newseq)>150:
+					if str(Seq.seq).count(newprim[1]) > 1:
+						if Seq.description not in chimlist:
+							chimlist.append(Seq.description)
+	# 						print(Seq.id," is a potential chimera! you should check it!", '\n')
+						else:
+							print('Duplicate primer!!')
+					else:	
+						Primerlist.append(newprim[0])
+						K += 1
+						if newprim[0] == "f":
+							try:
+								newseq = newseq.split(str(newprim[1]))[1]
+							except:
+								print(str(Seq.seq), '\n', newseq, Primerlist, '\n', newseq.split(str(newprim[1])),'\n', newprim[1])
+						if newprim[0] == "r":
+							newseq = newseq.split(str(newprim[1]))[0]
+				else:
+					crap.append(Seq.description)
 		if K == 2:
 			out = open(seqfile.split('.fas')[0]+'_primer.fas','a')
 			out.write('>'+Seq.description + '\n' + newseq + '\n')
@@ -54,14 +60,18 @@ def countread(seqfile):
 			out3 = open(seqfile.split('.fas')[0]+'_TwicePrim.fas','a')
 			out3.write('>'+Seq.description + '\n' + newseq + '\n')
 			out3.close()
+		elif Seq.description in crap:
+			out4 = open(seqfile.split('.fas')[0]+'_CRAP.fas','a')
+			out4.write('>'+Seq.description + '\n' + newseq + '\n')
+			out4.close()
 		else:
 			j += 1
 			out2 = open(seqfile.split('.fas')[0]+'_NOprimer.fas','a')
 			out2.write('>'+Seq.description + '\n' + str(Seq.seq) + '\n')
 			out2.close()
 		
-		print(str(j), " sequences do not have both primers of ", str(i), " sequences" , end= '\r')
-	print(str(j), " sequences do not have both primers, ", len(chimlist), " are potential chimera. \n ", str(i-(j+len(chimlist))), "  of ", str(i), " sequences are kept")
+# 		print(str(j), " sequences do not have both primers of ", str(i), " sequences" , end= '\r')
+	print(str(j), " sequences do not have both primers, ", len(chimlist), " are potential chimera, and ", len(crap), " are bad sequences. \n ", str(i-(j+len(chimlist)+len(crap))), "  of ", str(i), " sequences are kept")
 		
 	
 def main():
