@@ -16,9 +16,8 @@ from sys import argv
 def countread(seqfile):	
 	j = 0; i = 0; bases= ['A','G','T','C']
 	out = open(seqfile.split('.fas')[0]+'_primer.fas','w+'); out2 = open(seqfile.split('.fas')[0]+'_NOprimer.fas','w+');out3 = open(seqfile.split('.fas')[0]+'_TwicePrim.fas','w+'); primlist = []
-# 	for Primer in SeqIO.parse('SAR_db/Primer_Sequences.fas','fasta'):
 	print("Prepare the list of potential primer sequences with 2 mismatches.\r")
-	for Primer in SeqIO.parse('Primer_Sequences_Arc.fas','fasta'):
+	for Primer in SeqIO.parse('SAR_db/Primer_Sequences.fas','fasta'):
 		for l in range(0,len(str(Primer.seq))):
 			for b in bases:
 				edprim = str(Primer.seq)[0:l] + b + str(Primer.seq)[l+1:]
