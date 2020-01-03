@@ -39,7 +39,7 @@ $ python3 -m pip install pandas
 $ python3 -m pip install biopython
 
 ## install PEAR (Paired-end read merger)
-Download from https://www.h-its.org/downloads/pear-academic/
+Download from https://www.h-its.org/downloads/pear-academic/ (does not work with Safari but works with Mozilla)
 move the file to your installation folder (here document/softwares/).
 $ cd document/softwares/
 $ tar -xzvf pear-src-0.9.11
