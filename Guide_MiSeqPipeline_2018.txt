@@ -1,5 +1,5 @@
 June 1st, 2018
-
+January 3rd, 2020 (pipeline works fine with zsh)
 ###################################
 Before starting you need to install:
 # python 3
