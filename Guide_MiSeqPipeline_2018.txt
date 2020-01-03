@@ -43,6 +43,7 @@ Download from https://www.h-its.org/downloads/pear-academic/ (does not work with
 move the file to your installation folder (here document/softwares/).
 $ cd document/softwares/
 $ tar -xzvf pear-src-0.9.11
+S cd pear-src-0.9.11
 $ autoreconf -i
 $ ./configure
 $ make
